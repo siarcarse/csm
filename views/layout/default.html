@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Intranet</title>
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="/public/js/bootstrap/css/bootstrap.journal.css">
+</head>
+
+<body>
+    <div class="container">
+        {{! Import the contents of header.html from partials}}
+            {{> header}}
+
+        {{! Every view gets inserted here }} 
+            {{{content}}}
+    </div>
+</body>
+
+</html>
