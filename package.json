@@ -4,8 +4,10 @@
   "description": "Intranet",
   "main": "index.js",
   "dependencies": {
+    "dotenv": "^2.0.0",
     "handlebars": "^4.0.5",
     "hapi": "^13.4.1",
+    "hapi-postgres-connection": "^6.0.1",
     "inert": "^4.0.0",
     "vision": "^4.1.0"
   },
