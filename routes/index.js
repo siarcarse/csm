@@ -1,5 +1,5 @@
-var employee = require('./employee');
-var user = require('./user');
+import employee from './employee';
+import user from './user';
 
 const index = {
     method: 'GET',
@@ -25,5 +25,5 @@ const Public = {
         }
     }
 };
-
-module.exports = [].concat(Public, index, employee, user);
+const rules = [].concat(Public, index, employee, user);
+export default rules;

@@ -1,27 +1,29 @@
-var hapi = require('hapi');
-var Inert = require('inert');
-var Vision = require('vision');
-var routes = require('./routes'); //Import all routes
-require('dotenv').load(); // Load .env file for DATABASE connection
+import hapi from 'hapi';
+import Yar from 'yar';
+import Inert from 'inert';
+import Vision from 'vision';
+import routes from './routes'; //Import all routes
+import config  from './config/config.js';
+
+require('dotenv').load(); // Load .env file for evoriment vars
 
 // Create hapi server instance
 var server = new hapi.Server();
-
+ 
 // add connection parameters
 server.connection({
     host: 'localhost',
-    port: 3000
+    port: process.env.SERVER_PORT
 });
 server.register([Vision,
     { register:  Inert },
     { register: require('hapi-postgres-connection') }, // no options required
+    { register: Yar, options: config.cookies }, //Cookies config for sessions
 ], (err) => {
-
     if (err) {
         console.log("Failed to load vision.");
     }
 });
-//server.register(Inert);
 
 server.views({
     engines: {
@@ -33,11 +35,10 @@ server.views({
     //helpersPath: 'views/helpers',
     partialsPath: 'views/partials'
 });
-// tell your server about the defined routes
+//Load Routes
 server.route(routes);
 
 // Start the server
-server.start(function() {
-    // Log to the console the host and port info
+server.start(()=> {
     console.log('Server started at: ' + server.info.uri);
 });

@@ -1,17 +1,17 @@
-module.exports = [{
+const userRules = [{
     method: 'GET',
     path: '/user',
-    handler: function(request, reply) {
-        //reply('Hello! Users');
+    handler: (request, reply) => {
         var select = 'SELECT * FROM items';
-        request.pg.client.query(select, function(err, result) {
+        request.pg.client.query(select, (err, result) => {
             return reply(result.rows[0]);
         })
     }
 }, {
     method: 'GET',
     path: '/user/{id}',
-    handler: function(request, reply) {
+    handler: (request, reply) => {
         reply('Hello! Users : id');
     }
 }]
+export default userRules;

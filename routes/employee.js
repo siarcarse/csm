@@ -1,8 +1,9 @@
-module.exports = [
-    { method: 'GET', path: '/employee', handler: function(request, reply) {
+const employeeRules = [
+    { method: 'GET', path: '/employee', handler: (request, reply)=> {
         reply('Hello! Employees');
     } },
-    { method: 'GET', path: '/employee/{id}', handler: function(request, reply) {
+    { method: 'GET', path: '/employee/{id}', handler: (request, reply)=> {
         reply('Hello! Employees : id');
     } }
 ]
+export default employeeRules;
