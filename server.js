@@ -7,7 +7,6 @@ import config  from './config/config.js';
 
 require('dotenv').load(); // Load .env file for evoriment vars
 
-// Create hapi server instance
 var server = new hapi.Server();
  
 // add connection parameters
