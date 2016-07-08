@@ -5,10 +5,9 @@ import Vision from 'vision';
 import routes from './routes'; //Import all routes
 import config  from './config/config.js';
 
+var server = new hapi.Server();
 require('dotenv').load(); // Load .env file for evoriment vars
 
-var server = new hapi.Server();
- 
 // add connection parameters
 server.connection({
     host: 'localhost',

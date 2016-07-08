@@ -15,10 +15,13 @@
     "vision": "^4.1.0",
     "yar": "^7.0.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "nodemon": "^1.9.2"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "babel-node ./server.js"
+    "lint": "eslint server.js",
+    "start": "babel-node ./server.js",
+    "auto-start": "nodemon --exec \"npm run lint && npm start\" --ignore public/javascript"
   },
   "author": "siarcarse y fco_lo",
   "license": "ISC"
