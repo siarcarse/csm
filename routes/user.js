@@ -2,7 +2,7 @@ const userRules = [{
     method: 'GET',
     path: '/user',
     handler: (request, reply) => {
-        var select = 'SELECT * FROM items';
+        var select = 'SELECT * FROM users';
         request.pg.client.query(select, (err, result) => {
             return reply(result.rows[0]);
         })

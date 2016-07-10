@@ -1,5 +1,13 @@
 {{!< layout/default}}
-{{! The tag above means - insert everything in this file into the {content} of the default.html template }}
+
+{{#extend "css"}}
+    <!-- Many more Header insertions  -->
+{{/extend}}
+{{> header}}
 
 <h1>{{title}}</h1>
-<p>{{message}}</p>
+<p>{{message}}</p> 
+
+{{#extend "js"}}
+    <!-- Many more JS insertions  -->
+{{/extend}}

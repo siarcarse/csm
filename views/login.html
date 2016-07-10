@@ -1,5 +1,15 @@
-{{!< layout/default test="holi"}}
-{{! The tag above means - insert everything in this file into the {content} of the default.html template }}
+{{!< layout/default}}
 
-<h1>{{title}}</h1>
-<p>{{message}}</p>
+{{#extend "css"}}
+    <link rel="stylesheet" type="text/css" href="/public/css/style.css" />
+{{/extend}}
+<section class="container">
+    <section class="login-form">
+        <form method="post" action="#" role="login">
+            <img class="img-responsive" src="/public/images/logo.jpeg" alt="" width="200" height="96" />
+            <input type="text" name="username" required placeholder="Usuario" class="form-control input-lg" />
+            <input type="password" name="password" required placeholder="Contraseña" class="form-control input-lg" />
+            <button type="submit" name="send" class="btn btn-block btn-info">Iniciar Sesión</button>
+        </form>
+    </section>
+</section>

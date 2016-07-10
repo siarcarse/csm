@@ -1,31 +1,60 @@
 import hapi from 'hapi';
-import Yar from 'yar';
 import Inert from 'inert';
 import Vision from 'vision';
+import hapiAuthCookie from 'hapi-auth-cookie'; // http://git.io/vT5dZ
+import handlebars from 'handlebars';
+import extend from 'handlebars-extend-block';
+
 import routes from './routes'; //Import all routes
-import config  from './config/config.js';
+import cookiePassword, { PORT } from './config/config';
 
 var server = new hapi.Server();
 require('dotenv').load(); // Load .env file for evoriment vars
 
 // add connection parameters
 server.connection({
-    host: 'localhost',
-    port: process.env.SERVER_PORT
+    host: '0.0.0.0',
+    port: PORT || 3000
 });
 server.register([Vision,
+    { register: hapiAuthCookie }, // no options required
     { register:  Inert },
-    { register: require('hapi-postgres-connection') }, // no options required
-    { register: Yar, options: config.cookies }, //Cookies config for sessions
+    { register: require('hapi-postgres-connection') }
 ], (err) => {
     if (err) {
-        console.log("Failed to load vision.");
+        console.log("Failed to load module. ", err);
     }
+    const cache = server.cache({ segment: 'sessions', expiresIn: 3 * 60 * 60 * 1000 });
+    server.app.cache = cache;
+
+    server.auth.strategy('session', 'cookie', true, {
+        password: cookiePassword,
+        cookie: 'sid-csm',
+        redirectTo: '/login',
+        isSecure: false,
+        validateFunc: function(request, session, callback) {
+
+            cache.get(session.sid, (err, cached) => {
+
+                if (err) {
+                    return callback(err, false);
+                }
+
+                if (!cached) {
+                    return callback(null, false);
+                }
+
+                return callback(null, true, cached.account);
+            });
+        }
+    });
+    //Load Routes
+    server.route(routes);
 });
 
 server.views({
     engines: {
-        html: require('handlebars')
+        html: extend(handlebars)
     },
     path: 'views',
     layoutPath: 'views/layout',
@@ -33,10 +62,8 @@ server.views({
     //helpersPath: 'views/helpers',
     partialsPath: 'views/partials'
 });
-//Load Routes
-server.route(routes);
 
 // Start the server
-server.start(()=> {
+server.start(() => {
     console.log('Server started at: ' + server.info.uri);
 });
