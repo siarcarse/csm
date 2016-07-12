@@ -1,11 +1,13 @@
 const userRules = [{
     method: 'GET',
     path: '/user',
-    handler: (request, reply) => {
-        var select = 'SELECT * FROM users';
-        request.pg.client.query(select, (err, result) => {
-            return reply(result.rows[0]);
-        })
+    config: {
+        handler: (request, reply) => {
+            let columns = ['Id', 'Usuario', 'Rol', 'Nombre', 'Mail', 'Estado'];
+            return reply.view('users', { columns });
+        },
+        auth: { mode: 'try' },
+        plugins: { 'hapi-auth-cookie': { redirectTo: false } }
     }
 }, {
     method: 'GET',

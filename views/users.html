@@ -1,0 +1,119 @@
+{{!< layout/default}}
+{{#extend "css"}}
+    <link rel="stylesheet" href="/public/tools/DataTables/media/css/dataTables.bootstrap.css" />
+    <link rel="stylesheet" href="/public/tools/DataTables/extensions/Responsive/css/responsive.bootstrap.css" />
+    <link rel="stylesheet" href="../public/tools/DataTables/extensions/Select/css/select.bootstrap.css" />
+{{/extend}}
+{{> header}}
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="panel panel-primary">
+            <div class="panel-body text-center">
+                <button id="add-user" type="button" class="btn btn-success" data-toggle="modal" href='#crud-modal'>Nuevo<i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+                <button type="button" id="edit-crud" class="btn btn-primary">Editar <i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                <button type="button" id="delete-crud" class="btn btn-danger">Borrar <i class="fa fa-trash" aria-hidden="true"></i></button>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <table id="crud-grid" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    {{#columns}}
+                        <th>{{this}}</th>
+                    {{/columns}}
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    {{#columns}}
+                        <th>{{this}}</th>
+                    {{/columns}}
+                </tr>
+            </tfoot>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <div class="modal fade" id="crud-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title text-center">Usuarios</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="crudForm" action="" method="POST" role="form">
+                        <legend>Formulario de Usuarios</legend>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label for="">Usuario</label>
+                                    <input type="text" class="form-control" id="username" placeholder="Usuario" required>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label for="">Contraseña</label>
+                                    <input type="password" class="form-control" id="password" placeholder="Contraseña" required>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label for="">Nombre</label>
+                                    <input type="text" class="form-control" id="name" placeholder="EJ: Carlos">
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label for="">Apellidos</label>
+                                    <input type="text" class="form-control" id="lastname" placeholder="Apellidos">
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label for="">Rol</label>
+                                    <select name="" id="role" class="form-control" required="required">
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label for="">Email</label>
+                                    <input type="email" class="form-control" id="mail" placeholder="example@domain.com">
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label for="">Nacimiento</label>
+                                    <input type="date" class="form-control" id="birthdate" placeholder="dd-mm-yyyy">
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                <div class="form-group">
+                                    <label for="">Celular</label>
+                                    <input class="form-control" value="" id="phone" placeholder="73042359">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button id="saveUsers" type="button" class="btn btn-primary">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{#extend "js"}}
+    <script src="/public/tools/DataTables/media/js/jquery.dataTables.min.js"></script>
+    <script src="/public/tools/DataTables/media/js/dataTables.bootstrap.min.js"></script>
+    <script src="/public/tools/DataTables/extensions/Responsive/js/dataTables.responsive.js"></script>
+    <script src="/public/tools/DataTables/extensions/Responsive/js/responsive.bootstrap.js"></script>
+    <script src="/public/tools/DataTables/extensions/Select/js/dataTables.select.js"></script>
+    <script src="/public/js/jquery.numeric.min.js"></script>
+    <script src="/public/js/users/datatables.js"></script>
+    <script src="/public/js/users/controller.js"></script>
+    <script src="/public/js/users/main.js"></script>
+{{/extend}}
