@@ -1,8 +1,12 @@
-import employee from './employee';
+import role from './role';
+import level from './level';
+import student from './student';
+import parent from './parent';
 import user from './user';
 import { cookie_options } from '../config/config';
 import login from './handlers/loginHandler'
 import logout from './handlers/logoutHandler'
+
 import API from '../api/routes/';
 
 const Index = {
@@ -46,5 +50,5 @@ const Logout = {
         handler: logout
     }
 };
-const rules = [].concat(Public, Index, Login, Logout, employee, user, API);
+const rules = [].concat(Public, Index, Login, Logout, role, level, user, student, parent, API);
 export default rules;

@@ -40,59 +40,22 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title text-center">Usuarios</h4>
+                    <h4 class="modal-title text-center">Tipos de Usuarios</h4>
                 </div>
                 <div class="modal-body">
                     <div id="crudForm" action="" role="form">
-                        <legend>Formulario de Usuarios</legend>
+                        <legend>Formulario Tipos deUsuarios</legend>
                         <div class="row">
-                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                                <div class="form-group">
-                                    <label for="">Usuario</label>
-                                    <input type="text" class="form-control" id="username" placeholder="Usuario" required>
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                                <div class="form-group">
-                                    <label for="">Contraseña</label>
-                                    <input type="password" class="form-control" id="password" placeholder="Contraseña" required>
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <div class="form-group">
                                     <label for="">Nombre</label>
-                                    <input type="text" class="form-control" id="name" placeholder="EJ: Carlos">
+                                    <input type="text" class="form-control" id="name" placeholder="Usuario" required>
                                 </div>
                             </div>
-                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <div class="form-group">
-                                    <label for="">Apellidos</label>
-                                    <input type="text" class="form-control" id="lastname" placeholder="Apellidos">
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                                <div class="form-group">
-                                    <label for="">Rol</label>
-                                    <select name="" id="role" class="form-control" required="required">
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                                <div class="form-group">
-                                    <label for="">Email</label>
-                                    <input type="email" class="form-control" id="mail" placeholder="example@domain.com">
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                                <div class="form-group">
-                                    <label for="">Nacimiento</label>
-                                    <input type="date" class="form-control" id="birthdate" placeholder="yyyy-mm-dd">
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                                <div class="form-group">
-                                    <label for="">Celular</label>
-                                    <input class="form-control" value="" id="phone" placeholder="73042359">
+                                    <label for="">Descripción</label>
+                                    <textarea id="description" class="form-control" rows="3" required="required"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -113,7 +76,7 @@
     <script src="/public/tools/DataTables/extensions/Responsive/js/responsive.bootstrap.js"></script>
     <script src="/public/tools/DataTables/extensions/Select/js/dataTables.select.js"></script>
     <script src="/public/js/jquery.numeric.min.js"></script>
-    <script src="/public/js/users/datatables.js"></script>
-    <script src="/public/js/users/controller.js"></script>
-    <script src="/public/js/users/main.js"></script>
+    <script src="/public/js/level/datatables.js"></script>
+    <script src="/public/js/level/controller.js"></script>
+    <script src="/public/js/level/main.js"></script>
 {{/extend}}

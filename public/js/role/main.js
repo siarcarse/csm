@@ -1,10 +1,4 @@
 $(document).ready(function() {
-    controller.loadSelectRole();
-    $("#phone").numeric({ decimal: false, negative: false }); //Control numeric Input
-
-    $('input#phone').on('keyup', function() {
-        controller.limitText(this, 8); // Control Lenght Numeric Input (phone max 8 characters)
-    });
     //Reset state error un click inputs
     $('#crudForm :input').click(function(event) {
         $(this).parent().removeClass('has-error');
@@ -27,32 +21,26 @@ $(document).ready(function() {
 
     });
     $('#saveButton').click(function(event) {
-        let username = $('#username').val();
-        let password = $('#password').val();
         let name = $('#name').val();
-        let lastname = $('#lastname').val();
-        let role = $('#role').val();
-        let mail = $('#mail').val();
-        let birthdate = $('#birthdate').val();
-        let phone = $('#phone').val();
+        let description = $('#description').val();
         controller.validate((err) => {
             if (!err) {
                 let id = $(this).attr('data-update');
                 $(this).attr('data-update', '');
                 let method = 'POST';
-                let url = '/api/users';
+                let url = '/api/role';
                 if (id) {
                     method = 'PUT';
-                    url = '/api/users/' + id;
+                    url = '/api/role/' + id;
                 } else {
                     method = 'POST';
-                    url = '/api/users';
+                    url = '/api/role';
                 }
                 $('#crud-modal').modal('hide');
                 $.ajax({
                     url: url,
                     type: method,
-                    data: { username, password, name, lastname, role, mail, birthdate, phone },
+                    data: { name, description },
                 }).done(function(data) {
                     datatable.ajax.reload();
                 });
@@ -63,7 +51,7 @@ $(document).ready(function() {
         let rowSelected = datatable.rows('.selected').data();
         let id = rowSelected[0].id;
         $.ajax({
-            url: '/api/users/' + id,
+            url: '/api/role/' + id,
             type: 'DELETE',
         }).done(function(data) {
             datatable.ajax.reload();
