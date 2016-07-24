@@ -64,6 +64,7 @@ let controller = {
     },
     editFormData: (obj) => {
         $.each(obj, function(index, val) {
+            if (index === 'roleid') index = 'role';
             $("[id=" + index + "]").val(val);
         });
     }

@@ -13,10 +13,10 @@ $(document).ready(function() {
             }
         },
         "columns": [
-            { "data": "id" },
             { "data": "username" },
-            { "data": "role" },
+            { "data": "role_name" },
             { "data": "name" },
+            { "data": "lastname" },
             { "data": "mail" },
             { "data": "state" }
         ],

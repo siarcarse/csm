@@ -3,7 +3,7 @@ const userRules = [{
     path: '/user',
     config: {
         handler: (request, reply) => {
-            let columns = ['Id', 'Usuario', 'Rol', 'Nombre', 'Mail', 'Estado'];
+            let columns = ['Usuario', 'Rol', 'Nombre', 'Apellidos', 'Mail', 'Estado'];
             return reply.view('users', { columns });
         },
         auth: { mode: 'try' },

@@ -17,9 +17,11 @@ $(document).ready(function() {
         let rowSelected = datatable.rows('.selected').data();
         if (rowSelected.length === 1) {
             controller.editFormData(rowSelected[0]); // Lleno el formulario y abro el Modal
+            $('#crud-modal').modal('show');
+            $('#saveUsers').attr('data-update', rowSelected[0].id);
         } else if (rowSelected.length === 0) {
             global.sendMessage('info', 'Debes Seleccionar almenos un registro!');
-        } else if(rowSelected.length > 1) {
+        } else if (rowSelected.length > 1) {
             global.sendMessage('danger', 'Solo puedes editar 1 registro a la vez!');
         }
 
@@ -29,14 +31,42 @@ $(document).ready(function() {
         let password = $('#password').val();
         let name = $('#name').val();
         let lastname = $('#lastname').val();
-        let rol = $('#rol').val();
+        let role = $('#role').val();
         let mail = $('#mail').val();
         let birthdate = $('#birthdate').val();
         let phone = $('#phone').val();
         controller.validate((err) => {
             if (!err) {
-                console.log('No hay error, tamos ready for the insert into the wea! xD');
+                let id = $(this).attr('data-update');
+                $(this).attr('data-update', '');
+                let method = 'POST';
+                let url = '/api/users';
+                if (id) {
+                    method = 'PUT';
+                    url = '/api/users/' + id;
+                } else {
+                    method = 'POST';
+                    url = '/api/users';
+                }
+                $('#crud-modal').modal('hide');
+                $.ajax({
+                    url: url,
+                    type: method,
+                    data: { username, password, name, lastname, role, mail, birthdate, phone },
+                }).done(function(data) {
+                    datatable.ajax.reload();
+                });
             }
+        });
+    });
+    $('#delete-crud').click(function(event) {
+        let rowSelected = datatable.rows('.selected').data();
+        let id = rowSelected[0].id;
+        $.ajax({
+            url: '/api/users/' + id,
+            type: 'DELETE',
+        }).done(function(data) {
+            datatable.ajax.reload();
         });
     });
 });
