@@ -18,7 +18,8 @@ $(document).ready(function() {
             { "data": "rut" },
             { "data": "gender" },
             { "data": "birthdate" },
-            { "data": "address" }
+            { "data": "address" },
+            { "data": "id_apoderado" }
         ],
         "responsive": true,
         "serverSide": false,
@@ -28,6 +29,13 @@ $(document).ready(function() {
         "bLengthChange": true,
         "select": {
             style: 'multi'
+        },
+        "createdRow": function(row, data, index) {
+            if ($('td', row).last().text() !== '') {
+                var image = '<i class="fa fa-link" aria-hidden="true"></i>';
+                var button = '<button onclick="controller.loadTokenInput(' + data.id + ');" class="btn btn-info" data-toggle="modal" href="#assoc-modal">' + image + '</button>';
+                $('td', row).last().addClass('text-center').html(button);
+            }
         }
     });
 

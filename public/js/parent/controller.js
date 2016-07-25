@@ -53,5 +53,47 @@ let controller = {
             if (index === 'roleid') index = 'role';
             $("[id=" + index + "]").val(val);
         });
+    },
+    loadTokenInput: (parent) => {
+        $.get('/api/student/father/' + parent, (data) => { // Traigo a los sin padre
+            $.get('/api/student/' + parent + '/father/', (selected) => { // Traigo a los hijos previos
+
+                //Cargo a los sin padres
+                $multiselect = $('#multiselect');
+                $multiselect.empty();
+                $.each(data, function(i, item) {
+                    $multiselect.append($("<option></option>")
+                        .attr("value", item.id).attr("data-father", parent).text(item.name));
+                });
+
+                //Cargo los hijos previos
+                $multiselect_to = $('#multiselect_to');
+                $multiselect_to.empty();
+                $.each(selected, function(i, item) {
+                    $multiselect_to.append($("<option></option>")
+                        .attr("value", item.id).text(item.name));
+                });
+                $('#multiselect').multiselect({
+                    search: {
+                        left: '<input type="text" name="q" class="form-control" placeholder="Buscar..." />'
+                    },
+                    afterMoveToLeft: function(left, right, options) {
+                        let id = options.val();
+                        if (id) {
+                            $.post('/api/student/father/', { father: 0, id: id }, function(data) {//Asigno el father
+                            });
+                        }
+                    },
+                    afterMoveToRight: function(left, right, options) {//Reseteo el father
+                        let id = options.val();
+                        let father = options.attr('data-father');
+                        if (id) {
+                            $.post('/api/student/father/', { father: father, id: id }, function(data) {
+                            });
+                        }
+                    }
+                });
+            });
+        });
     }
 }

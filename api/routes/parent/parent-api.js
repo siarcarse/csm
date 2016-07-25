@@ -6,7 +6,7 @@ const parent = [{
     config: {
         handler: (request, reply) => {
             var select = `SELECT id, name, lastname, rut, gender, to_char(birthdate, 'YYYY-MM-DD') AS birthdate,
-                          address
+                          address, id as id_apoderado
                           FROM persons
                           WHERE type='apoderado'`;
             request.pg.client.query(select, (err, result) => {

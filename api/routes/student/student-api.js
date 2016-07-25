@@ -23,6 +23,46 @@ const student = [{
     }
 }, {
     method: 'GET',
+    path: '/api/student/father/{id}',
+    config: {
+        handler: (request, reply) => {
+            var select = `SELECT id, (rut || ' ' || name || ' ' || lastname) AS name
+                          FROM persons
+                          WHERE type='alumno' AND id NOT IN (SELECT id FROM persons WHERE father = $1) AND father IS NULL`;
+            request.pg.client.query(select, [encodeURIComponent(request.params.id)], (err, result) => {
+                let user = result.rows;
+                return reply(user);
+            })
+        },
+        validate: {
+            params: {
+                id: Joi.number().min(0)
+            }
+        },
+        auth: false
+    }
+}, {
+    method: 'GET',
+    path: '/api/student/{id}/father/',
+    config: {
+        handler: (request, reply) => {
+            var select = `SELECT id, (rut || ' ' || name || ' ' || lastname) AS name
+                          FROM persons
+                          WHERE type='alumno' AND father = $1`;
+            request.pg.client.query(select, [encodeURIComponent(request.params.id)], (err, result) => {
+                let user = result.rows;
+                return reply(user);
+            })
+        },
+        validate: {
+            params: {
+                id: Joi.number().min(0)
+            }
+        },
+        auth: false
+    }
+}, {
+    method: 'GET',
     path: '/api/student/{id}',
     config: {
         handler: (request, reply) => {
@@ -57,9 +97,9 @@ const student = [{
                         VALUES ('${name}', '${lastname}', '${rut}', '${birthdate}', '${gender}', '${address}', 'alumno')`;
             request.pg.client.query(sql, (err, result) => {
                 if (err) {
-                    reply({ message: sql });
+                    reply({ message: err });
                 } else {
-                    reply({ message: sql });
+                    reply({ message: result });
                 }
             })
         },
@@ -71,6 +111,33 @@ const student = [{
                 birthdate: Joi.string(),
                 gender: Joi.string().min(1).max(2),
                 address: Joi.string()
+            })
+        },
+        auth: false
+    }
+}, {
+    method: 'POST',
+    path: '/api/student/father/',
+    config: {
+        handler: (request, reply) => {
+            let id = request.payload.id;
+            let father = request.payload.father;
+            if(parseInt(father) === 0) {
+                father = null;
+            }
+            let sql = `UPDATE persons SET father = ${father} WHERE id=${id}`;
+            request.pg.client.query(sql, (err, result) => {
+                if (err) {
+                    reply({ message: err });
+                } else {
+                    reply({ message: result });
+                }
+            })
+        },
+        validate: {
+            payload: Joi.object().keys({
+                id: Joi.number().min(1).max(60),
+                father: Joi.number().allow(null)
             })
         },
         auth: false

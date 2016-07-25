@@ -2,7 +2,7 @@
 {{#extend "css"}}
     <link rel="stylesheet" href="/public/tools/DataTables/media/css/dataTables.bootstrap.css" />
     <link rel="stylesheet" href="/public/tools/DataTables/extensions/Responsive/css/responsive.bootstrap.css" />
-    <link rel="stylesheet" href="../public/tools/DataTables/extensions/Select/css/select.bootstrap.css" />
+    <link rel="stylesheet" href="/public/tools/DataTables/extensions/Select/css/select.bootstrap.css" />
 {{/extend}}
 {{> header}}
 <div class="row">
@@ -96,6 +96,36 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="assoc-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title text-center"><p id="title-modal-assoc"></p></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xs-5">
+                            <select name="from[]" id="multiselect" class="form-control" size="8" multiple="multiple">
+                                <option value="1">Item 1</option>
+                                <option value="2">Item 5</option>
+                                <option value="2">Item 2</option>
+                                <option value="2">Item 4</option>
+                                <option value="3">Item 3</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-2">
+                            <button type="button" id="multiselect_rightSelected" class="btn btn-block"><i class="glyphicon glyphicon-chevron-right"></i></button>
+                            <button type="button" id="multiselect_leftSelected" class="btn btn-block"><i class="glyphicon glyphicon-chevron-left"></i></button>
+                        </div>
+                        <div class="col-xs-5">
+                            <select name="to[]" id="multiselect_to" class="form-control" size="8" multiple="multiple"></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {{#extend "js"}}
     <script src="/public/tools/DataTables/media/js/jquery.dataTables.min.js"></script>
@@ -103,6 +133,7 @@
     <script src="/public/tools/DataTables/extensions/Responsive/js/dataTables.responsive.js"></script>
     <script src="/public/tools/DataTables/extensions/Responsive/js/responsive.bootstrap.js"></script>
     <script src="/public/tools/DataTables/extensions/Select/js/dataTables.select.js"></script>
+    <script src="/public/tools/multiselect.min.js"></script>
     <script src="/public/js/jquery.numeric.min.js"></script>
     <script src="/public/js/parent/datatables.js"></script>
     <script src="/public/js/parent/controller.js"></script>

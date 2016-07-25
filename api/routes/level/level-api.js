@@ -5,7 +5,7 @@ const level = [{
     path: '/api/level/{param*}',
     config: {
         handler: (request, reply) => {
-            var select = `SELECT * FROM level`;
+            var select = `SELECT * FROM level ORDER BY id ASC`;
             request.pg.client.query(select, (err, result) => {
                 let level = result.rows;
                 return reply(level);

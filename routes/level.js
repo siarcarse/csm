@@ -3,8 +3,8 @@ const levelRules = [{
     path: '/level',
     config: { auth: false },
     handler: (request, reply) => {
-        let columns = ['Nombre', 'Descripción'];
-        reply.view('level', {columns});
+        let columns = ['id', 'Nombre', 'Descripción'];
+        reply.view('level', { columns });
     }
 }]
 export default levelRules;
