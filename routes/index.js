@@ -1,5 +1,7 @@
 import role from './role';
 import level from './level';
+import lesson from './lesson';
+import courses from './courses';
 import student from './student';
 import parent from './parent';
 import user from './user';
@@ -50,5 +52,5 @@ const Logout = {
         handler: logout
     }
 };
-const rules = [].concat(Public, Index, Login, Logout, role, level, user, student, parent, API);
+const rules = [].concat(Public, Index, Login, Logout, role, level, lesson, courses, user, student, parent, API);
 export default rules;
