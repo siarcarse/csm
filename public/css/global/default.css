@@ -6,3 +6,11 @@
     width: 100%;
     height: 5px;
 }
+
+.modal.modal-wide .modal-dialog {
+    width: 60%;
+}
+
+.modal-wide .modal-body {
+    overflow-y: auto;
+}

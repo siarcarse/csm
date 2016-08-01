@@ -4,7 +4,7 @@ const roleRules = [{
     config: { auth: false },
     handler: (request, reply) => {
         let columns = ['Nombre', 'Descripción'];
-        reply.view('role', {columns});
+        reply.view('administration/role', {columns});
     }
 }]
 export default roleRules;

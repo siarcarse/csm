@@ -59,8 +59,8 @@ const users = [{
             let mail = request.payload.mail;
             let password = request.payload.password;
             let phone = request.payload.phone;
-            let sql = `INSERT INTO users (username, name, lastname, birthdate, role, password, mail, phone)
-                        VALUES ('${username}', '${name}', '${lastname}', '${birthdate}', ${role}, '${password}', '${mail}', ${phone})`;
+            let sql = `INSERT INTO users (username, name, lastname, birthdate, role, password, mail, phone, state)
+                        VALUES ('${username}', '${name}', '${lastname}', '${birthdate}', ${role}, '${password}', '${mail}', ${phone}, 'activo')`;
             request.pg.client.query(sql, (err, result) => {
                 if (err) {
                     reply({ message: err });

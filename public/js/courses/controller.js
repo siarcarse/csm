@@ -88,5 +88,55 @@ let controller = {
                 });
             });
         });
+    },
+    loadStudentInput: (course, name_course) => {
+        $('#title-modal-student').text(name_course);
+        $.get('/api/student/' + course + '/course', (data) => {
+            $.get('/api/student/courses/' + course, (selected) => {
+
+                //Cargo a los sin Cursos
+                $multiselect = $('#multiselect_student');
+                $multiselect.empty();
+                $.each(data, function(i, item) {
+                    $multiselect.append($("<option></option>")
+                        .attr("value", item.id).attr("data-course", course).text(item.name));
+                });
+
+                //Cargo los cursos previos
+                $multiselect_to = $('#multiselect_to_student');
+                $multiselect_to.empty();
+                $.each(selected, function(i, item) {
+                    $multiselect_to.append($("<option></option>")
+                        .attr("value", item.id).attr("data-course", course).text(item.name));
+                });
+                $('#multiselect_student').multiselect({
+                    search: {
+                        left: '<input type="text" name="q" class="form-control" placeholder="Buscar..." />',
+                        right: '<strong class="text-primary text-center">Alumnos del curso!</strong>'
+                    },
+                    right: '#multiselect_to_student',
+                    rightSelected: '#js_right_Selected_1',
+                    leftSelected: '#js_left_Selected',
+                    afterMoveToLeft: function(left, right, options) {
+                        let course = options.attr('data-course');
+                        let student = options.val();
+                        if (student) {
+                            $.ajax({
+                                url: '/api/course_student',
+                                type: 'DELETE',
+                                data: { course: course, student: student }
+                            });
+                        }
+                    },
+                    afterMoveToRight: function(left, right, options) { //Reseteo el course
+                        let student = options.val();
+                        let course = options.attr('data-course');
+                        if (student) {
+                            $.post('/api/course_student', { course: course, student: student });
+                        }
+                    }
+                });
+            });
+        });
     }
 }

@@ -1,17 +1,15 @@
 import Joi from 'joi';
 import Boom from 'boom';
-const courses = [{
+const course_student = [{
     method: 'GET',
-    path: '/api/courses/{param*}',
+    path: '/api/course_student/{param*}',
     config: {
         handler: (request, reply) => {
-            var select = `SELECT courses.id, level.name AS level_name, year, level.id AS level
-                          FROM courses
-                          LEFT JOIN level ON level.id=courses.level 
+            var select = `SELECT * FROM course_student
                           ORDER BY id ASC`;
             request.pg.client.query(select, (err, result) => {
-                let courses = result.rows;
-                return reply(courses);
+                let course_student = result.rows;
+                return reply(course_student);
             })
         },
         validate: {
@@ -25,13 +23,12 @@ const courses = [{
     }
 }, {
     method: 'GET',
-    path: '/api/courses/{id}',
+    path: '/api/course_student/{id}',
     config: {
         handler: (request, reply) => {
-            var select = `SELECT courses.id, level.name AS level, year 
-                          FROM courses
-                          LEFT JOIN level ON level.id=courses.level 
-                          WHERE courses.id = $1
+            console.log();
+            var select = `SELECT * FORM course_student
+                          WHERE course_student.id = $1
                           ORDER BY id ASC`;
             request.pg.client.query(select, [encodeURIComponent(request.params.id)], (err, result) => {
                 let user = result.rows;
@@ -46,37 +43,14 @@ const courses = [{
         auth: false
     }
 }, {
-    method: 'GET',
-    path: '/api/courses/{year}/year',
-    config: {
-        handler: (request, reply) => {
-            var select = `SELECT courses.id, level.name AS level_name, year, level.id AS level, courses.id AS lesson,
-                          courses.id AS student
-                          FROM courses
-                          LEFT JOIN level ON level.id=courses.level 
-                          WHERE year = $1
-                          ORDER BY id ASC`;
-            request.pg.client.query(select, [parseInt(encodeURIComponent(request.params.year))], (err, result) => {
-                let user = result.rows;
-                return reply(user);
-            })
-        },
-        validate: {
-            params: {
-                year: Joi.number().min(2016)
-            }
-        },
-        auth: false
-    }
-}, {
     method: 'POST',
-    path: '/api/courses',
+    path: '/api/course_student',
     config: {
         handler: (request, reply) => {
-            let level = request.payload.level;
-            let year = request.payload.year;
-            let sql = `INSERT INTO courses (level, year)
-                        VALUES ('${level}', '${year}')`;
+            let course = request.payload.course;
+            let student = request.payload.student;
+            let sql = `INSERT INTO course_student (course, student)
+                        VALUES (${course}, ${student})`;
             request.pg.client.query(sql, (err, result) => {
                 if (err) {
                     reply({ message: err });
@@ -87,21 +61,21 @@ const courses = [{
         },
         validate: {
             payload: Joi.object().keys({
-                level: Joi.number().required().min(1).max(60),
-                year: Joi.number().required().min(2016).max(2116),
+                course: Joi.number().required().min(1).max(60),
+                student: Joi.number().required(),
             })
         },
         auth: false
     }
 }, {
     method: 'PUT',
-    path: '/api/courses/{id}',
+    path: '/api/course_student/{id}',
     config: {
         handler: (request, reply) => {
             let id = encodeURIComponent(request.params.id);
             let year = request.payload.year;
             let level = request.payload.level;
-            let sql = `UPDATE courses SET level = '${level}', year = '${year}'
+            let sql = `UPDATE course_student SET level = '${level}', year = '${year}'
                        WHERE id = ${id}`;
             request.pg.client.query(sql, (err, result) => {
                 if (err) {
@@ -124,11 +98,13 @@ const courses = [{
     }
 }, {
     method: 'DELETE',
-    path: '/api/courses/{id}',
+    path: '/api/course_student',
     config: {
         handler: (request, reply) => {
-            let sql = `DELETE FROM courses WHERE id = $1`;
-            request.pg.client.query(sql, [encodeURIComponent(request.params.id)], (err, result) => {
+            let course = request.payload.course;
+            let student = request.payload.student;
+            let sql = `DELETE FROM course_student WHERE course = $1 AND student = $2`;
+            request.pg.client.query(sql, [course, student], (err, result) => {
                 if (err) {
                     reply({ message: err });
                 } else {
@@ -137,11 +113,12 @@ const courses = [{
             })
         },
         validate: {
-            params: {
-                id: Joi.number()
-            }
+            payload: Joi.object().keys({
+                course: Joi.number().required(),
+                student: Joi.number().required(),
+            })
         },
         auth: false
     }
 }];
-export default courses;
+export default course_student;

@@ -4,7 +4,7 @@ const userRules = [{
     config: {
         handler: (request, reply) => {
             let columns = ['Usuario', 'Rol', 'Nombre', 'Apellidos', 'Mail', 'Estado'];
-            return reply.view('users', { columns });
+            return reply.view('administration/users', { columns });
         },
         auth: { mode: 'try' },
         plugins: { 'hapi-auth-cookie': { redirectTo: false } }

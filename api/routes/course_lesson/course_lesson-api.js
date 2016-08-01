@@ -5,9 +5,16 @@ const course_lesson = [{
     path: '/api/course_lesson/{param*}',
     config: {
         handler: (request, reply) => {
-            var select = `SELECT * FROM course_lesson
-                          ORDER BY id ASC`;
+            var select = `SELECT course_lesson.id, level.name AS course, courses.year, lesson.name AS lesson 
+                          FROM course_lesson
+                          LEFT JOIN courses ON courses.id=course_lesson.course
+                          LEFT JOIN level ON level.id=courses.level
+                          LEFT JOIN lesson ON lesson.id=course_lesson.lesson
+                          ORDER BY level.id ASC`;
             request.pg.client.query(select, (err, result) => {
+                if(err) {
+                    return reply(err);    
+                }
                 let course_lesson = result.rows;
                 return reply(course_lesson);
             })
@@ -23,21 +30,24 @@ const course_lesson = [{
     }
 }, {
     method: 'GET',
-    path: '/api/course_lesson/{id}',
+    path: '/api/course_lesson/{course}/course/',
     config: {
         handler: (request, reply) => {
-            console.log();
-            var select = `SELECT * FORM course_lesson
-                          WHERE course_lesson.id = $1
-                          ORDER BY id ASC`;
-            request.pg.client.query(select, [encodeURIComponent(request.params.id)], (err, result) => {
-                let user = result.rows;
-                return reply(user);
+            var select = `SELECT course_lesson.id, level.name AS course, courses.year, lesson.name AS lesson 
+                          FROM course_lesson
+                          LEFT JOIN courses ON courses.id=course_lesson.course
+                          LEFT JOIN level ON level.id=courses.level
+                          LEFT JOIN lesson ON lesson.id=course_lesson.lesson
+                          WHERE courses.id=$1
+                          ORDER BY level.id ASC`;
+            request.pg.client.query(select, [encodeURIComponent(request.params.course)], (err, result) => {
+                let course_lesson = result.rows;
+                return reply(course_lesson);
             })
         },
         validate: {
             params: {
-                id: Joi.number().min(0)
+                course: Joi.number().min(0)
             }
         },
         auth: false

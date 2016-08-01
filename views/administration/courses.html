@@ -9,9 +9,9 @@
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <div class="panel panel-primary">
             <div class="panel-body text-center">
-                <button id="add-user" type="button" class="btn btn-success" data-toggle="modal" href='#crud-modal'>Nuevo<i class="fa fa-plus-circle" aria-hidden="true"></i></button>
-                <button type="button" id="edit-crud" class="btn btn-primary">Editar <i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
-                <button type="button" id="delete-crud" class="btn btn-danger">Borrar <i class="fa fa-trash" aria-hidden="true"></i></button>
+                <button id="add-user" type="button" class="btn btn-success btn-raised" data-toggle="modal" href='#crud-modal'>Nuevo<i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+                <button type="button" id="edit-crud" class="btn btn-primary btn-raised">Editar <i class="fa fa-pencil-square-o" aria-hidden="true"></i></button>
+                <button type="button" id="delete-crud" class="btn btn-danger btn-raised">Borrar <i class="fa fa-trash" aria-hidden="true"></i></button>
             </div>
         </div>
     </div>
@@ -94,7 +94,7 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="assoc-modal">
+    <div class="modal modal-wide fade" id="assoc-modal">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -103,22 +103,52 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-xs-5">
-                            <select name="from[]" id="multiselect" class="form-control" size="8">
-                            </select>
-                        </div>
-                        <div class="col-xs-2">
-                            <button type="button" id="multiselect_rightSelected" class="btn btn-block">
-                                <i class="glyphicon glyphicon-chevron-right"></i>
-                            </button>
-                            <button type="button" id="multiselect_leftSelected" class="btn btn-block">
-                                <i class="glyphicon glyphicon-chevron-left"></i>
-                            </button>
-                        </div>
-                        <div class="col-xs-5">
-                            <select name="to[]" id="multiselect_to" class="form-control" size="8">
-                            </select>
-                        </div>
+                        <fieldset>
+                            <div class="col-xs-5">
+                                <select name="from[]" id="multiselect" class="form-control" size="8">
+                                </select>
+                            </div>
+                            <div class="col-xs-2">
+                                <button type="button" id="multiselect_rightSelected" class="btn btn-block">
+                                    <i class="glyphicon glyphicon-chevron-right"></i>
+                                </button>
+                                <button type="button" id="multiselect_leftSelected" class="btn btn-block">
+                                    <i class="glyphicon glyphicon-chevron-left"></i>
+                                </button>
+                            </div>
+                            <div class="col-xs-5">
+                                <select name="to[]" id="multiselect_to" class="form-control" size="8">
+                                </select>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal modal-wide fade" id="student-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title text-center"><p id="title-modal-student"></p></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <fieldset>
+                            <div class="col-xs-5">
+                                <select name="from[]" id="multiselect_student" class="form-control" size="8">
+                                </select>
+                            </div>
+                            <div class="col-xs-2">
+                                <button type="button" id="js_right_Selected" class="btn btn-block"><i class="glyphicon glyphicon-chevron-right"></i></button>
+                                <button type="button" id="js_left_Selected" class="btn btn-block"><i class="glyphicon glyphicon-chevron-left"></i></button>
+                            </div>
+                            <div class="col-xs-5">
+                                <select name="to[]" id="multiselect_to_student" class="form-control" size="8">
+                                </select>
+                            </div>
+                        </fieldset>
                     </div>
                 </div>
             </div>

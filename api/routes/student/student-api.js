@@ -116,13 +116,59 @@ const student = [{
         auth: false
     }
 }, {
+    method: 'GET',
+    path: '/api/student/{course}/course',
+    config: {
+        handler: (request, reply) => {
+            var sql = `SELECT id, (rut || ' ' || name || ' ' || lastname) AS name
+                          FROM persons 
+                          WHERE id NOT IN (SELECT student FROM course_student)
+                          AND type='alumno'`;
+            request.pg.client.query(sql, (err, result) => {
+                if (err) {
+                    return reply(err);    
+                }
+
+                let persons = result.rows;
+                return reply(persons);
+            })
+        },
+        validate: {
+            params: {
+                course: Joi.number().min(0)
+            }
+        },
+        auth: false
+    }
+}, {
+    method: 'GET',
+    path: '/api/student/courses/{course}',
+    config: {
+        handler: (request, reply) => {
+            var select = `SELECT id, (rut || ' ' || name || ' ' || lastname) AS name
+                          FROM persons 
+                          WHERE id IN (SELECT student FROM course_student WHERE course=$1)
+                          AND type='alumno'`;
+            request.pg.client.query(select, [encodeURIComponent(request.params.course)], (err, result) => {
+                let persons = result.rows;
+                return reply(persons);
+            })
+        },
+        validate: {
+            params: {
+                course: Joi.number().min(0)
+            }
+        },
+        auth: false
+    }
+}, {
     method: 'POST',
     path: '/api/student/father/',
     config: {
         handler: (request, reply) => {
             let id = request.payload.id;
             let father = request.payload.father;
-            if(parseInt(father) === 0) {
+            if (parseInt(father) === 0) {
                 father = null;
             }
             let sql = `UPDATE persons SET father = ${father} WHERE id=${id}`;

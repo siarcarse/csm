@@ -7,7 +7,7 @@ $(document).ready(function() {
             "url": "/public/tools/DataTables/Spanish.json"
         },
         "ajax": {
-            "url": "/api/courses/" + year + "/year",
+            "url": "/api/course_lesson/0/course/",
             "dataSrc": "",
             "data": function(d) {
                 ajaxComplete = true;
@@ -15,10 +15,10 @@ $(document).ready(function() {
         },
         "columns": [
             { "data": "id" },
-            { "data": "level_name" },
-            { "data": "year" },
             { "data": "lesson" },
-            { "data": "student" }
+            { "data": "course" },
+            { "data": "year" },
+            { "data": null }
         ],
         "responsive": true,
         "serverSide": false,
@@ -30,14 +30,9 @@ $(document).ready(function() {
             style: 'multi'
         },
         "createdRow": function(row, data, index) {
-            if ($('td', row).last().prev().text() !== '') {
-                var image = '<i class="fa fa-book" aria-hidden="true"></i>';
-                var button = "<button onclick='controller.loadTokenInput(" + data.id + ", " + '"' + data.level_name + '"' + ");' class='btn btn-info' data-toggle='modal' href='#assoc-modal'>" + image + "</button>";
-                $('td', row).last().prev().addClass('text-center').html(button);
-            }
             if ($('td', row).last().text() !== '') {
                 var image = '<i class="fa fa-graduation-cap" aria-hidden="true"></i>';
-                var button = "<button onclick='controller.loadStudentInput(" + data.id + ", " + '"Alumnos ' + data.level_name + ' ' + data.year +'"' + ");' class='btn btn-success' data-toggle='modal' href='#student-modal'>" + image + "</button>";
+                var button = "<button onclick='controller.loadTeacherInput(" + data.id + ", " + '"Profesores ' + data.lesson + ' ' + data.course +' ' + data.year +'"' + ");' class='btn btn-success' data-toggle='modal' href='#assoc-modal'>" + image + "</button>";
                 $('td', row).last().addClass('text-center').html(button);
             }
         }

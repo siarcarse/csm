@@ -4,7 +4,7 @@ const lessonRules = [{
     config: { auth: false },
     handler: (request, reply) => {
         let columns = ['Nombre', 'Descripción'];
-        reply.view('lesson', { columns });
+        reply.view('administration/lesson', { columns });
     }
 }]
 export default lessonRules;
