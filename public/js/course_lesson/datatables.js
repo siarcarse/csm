@@ -18,7 +18,7 @@ $(document).ready(function() {
             { "data": "lesson" },
             { "data": "course" },
             { "data": "year" },
-            { "data": null }
+            { "data": "teachers" }
         ],
         "responsive": true,
         "serverSide": false,
@@ -31,8 +31,13 @@ $(document).ready(function() {
         },
         "createdRow": function(row, data, index) {
             if ($('td', row).last().text() !== '') {
+                if (parseInt(data.teachers) > 0) {
+                    var className = 'success';
+                } else {
+                    var className = 'default';
+                }
                 var image = '<i class="fa fa-graduation-cap" aria-hidden="true"></i>';
-                var button = "<button onclick='controller.loadTeacherInput(" + data.id + ", " + '"Profesores ' + data.lesson + ' ' + data.course +' ' + data.year +'"' + ");' class='btn btn-success' data-toggle='modal' href='#assoc-modal'>" + image + "</button>";
+                var button = "<button onclick='controller.loadTeacherInput(" + data.id + ", " + '"Profesores ' + data.lesson + ' ' + data.course + ' ' + data.year + '"' + ");' class='btn btn-" + className + "' data-toggle='modal' href='#assoc-modal'>" + image + "</button>";
                 $('td', row).last().addClass('text-center').html(button);
             }
         }

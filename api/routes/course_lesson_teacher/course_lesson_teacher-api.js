@@ -19,7 +19,7 @@ const course_lesson_teacher = [{
         },
         validate: {
             payload: Joi.object().keys({
-                course_lesson: Joi.number().required().min(1).max(60),
+                course_lesson: Joi.number().required().min(1),
                 teacher: Joi.number().required(),
             })
         },

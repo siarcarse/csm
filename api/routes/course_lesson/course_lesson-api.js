@@ -33,12 +33,21 @@ const course_lesson = [{
     path: '/api/course_lesson/{course}/course/',
     config: {
         handler: (request, reply) => {
-            var select = `SELECT course_lesson.id, level.name AS course, courses.year, lesson.name AS lesson 
+            /*var select = `SELECT course_lesson.id, level.name AS course, courses.year, lesson.name AS lesson 
                           FROM course_lesson
                           LEFT JOIN courses ON courses.id=course_lesson.course
                           LEFT JOIN level ON level.id=courses.level
                           LEFT JOIN lesson ON lesson.id=course_lesson.lesson
                           WHERE courses.id=$1
+                          ORDER BY level.id ASC`;*/
+            var select = `SELECT course_lesson.id, level.name AS course, courses.year, lesson.name AS lesson, COUNT(course_lesson_teacher.teacher) AS teachers
+                          FROM course_lesson
+                          LEFT JOIN courses ON courses.id=course_lesson.course
+                          LEFT JOIN level ON level.id=courses.level
+                          LEFT JOIN lesson ON lesson.id=course_lesson.lesson
+                          LEFT JOIN course_lesson_teacher ON course_lesson_teacher.course_lesson=course_lesson.id
+                          WHERE courses.id=$1
+                          GROUP BY course_lesson.id, level.name, courses.year, lesson.name, level.id
                           ORDER BY level.id ASC`;
             request.pg.client.query(select, [encodeURIComponent(request.params.course)], (err, result) => {
                 let course_lesson = result.rows;
@@ -71,7 +80,7 @@ const course_lesson = [{
         },
         validate: {
             payload: Joi.object().keys({
-                course: Joi.number().required().min(1).max(60),
+                course: Joi.number().required().min(1),
                 lesson: Joi.number().required(),
             })
         },
@@ -100,7 +109,7 @@ const course_lesson = [{
                 id: Joi.number()
             },
             payload: Joi.object().keys({
-                level: Joi.number().required().min(1).max(60),
+                level: Joi.number().required().min(1),
                 year: Joi.number().required().min(2016).max(2116),
             })
         },

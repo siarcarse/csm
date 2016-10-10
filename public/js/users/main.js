@@ -78,7 +78,6 @@ $(document).ready(function() {
             url: '/api/users/' + id,
             type: 'DELETE',
         }).done(function(data) {
-            console.log(data);
             datatable.ajax.reload();
         });
     });
