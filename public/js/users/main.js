@@ -5,6 +5,17 @@ $(document).ready(function() {
     $('input#phone').on('keyup', function() {
         controller.limitText(this, 8); // Control Lenght Numeric Input (phone max 8 characters)
     });
+    $('#rut').Rut({
+        on_error: () => {
+            $('#rut').parent().addClass('has-error');
+            global.sendMessage('danger', 'Rut Invalido!');
+            $('#saveButton').attr('disabled', 'disabled');
+        },
+        on_success: ()=> {
+            $('#rut').parent().removeClass('has-error');
+            $('#saveButton').removeAttr('disabled');
+        }
+    });
     //Reset state error un click inputs
     $('#crudForm :input').click(function(event) {
         $(this).parent().removeClass('has-error');
@@ -33,6 +44,7 @@ $(document).ready(function() {
         let lastname = $('#lastname').val();
         let role = $('#role').val();
         let mail = $('#mail').val();
+        let rut = $('#rut').val();
         let birthdate = $('#birthdate').val();
         let phone = $('#phone').val();
         controller.validate((err) => {
@@ -52,7 +64,7 @@ $(document).ready(function() {
                 $.ajax({
                     url: url,
                     type: method,
-                    data: { username, password, name, lastname, role, mail, birthdate, phone },
+                    data: { username, password, name, lastname, role, mail, birthdate, phone, rut },
                 }).done(function(data) {
                     datatable.ajax.reload();
                 });
@@ -66,6 +78,7 @@ $(document).ready(function() {
             url: '/api/users/' + id,
             type: 'DELETE',
         }).done(function(data) {
+            console.log(data);
             datatable.ajax.reload();
         });
     });

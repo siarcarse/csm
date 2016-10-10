@@ -1,0 +1,60 @@
+{{!< layout/default}}
+{{#extend "css"}}
+    <link rel="stylesheet" type="text/css" href="/public/tools/bootstrap-select/dist/css/bootstrap-select.min.css">
+    <link rel="stylesheet" type="text/css" href="/public/tools/summernote/dist/summernote.css">
+{{/extend}}
+{{> header}}
+<h1 class="text-center">Ingreso de Anotaciones</h1>
+<br>
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <h3 class="panel-title">Complete los datos</h3>
+    </div>
+    <div id="crudForm" class="panel-body">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                <div class="form-group">
+                    <label for="">Tipo de Anotación</label>
+                    <select name="" id="type" class="form-control fa-select" required="required">
+                        <option value="0">-- Seleccione Tipo --</option>
+                        <option value="positiva"> &#xf118; Positiva</option>
+                        <option value="negativa"> &#xf11a; Negativa</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                <div class="form-group">
+                    <label for="">Seleccione Curso</label>
+                    <select name="" id="courses" class="form-control" required="required">
+                    </select>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                <div class="form-group">
+                    <label for="">Seleccione Alumno</label>
+                    <select name="" id="student" class="form-control" required="required">
+                        <option value="0">-- Seleccione Tipo --</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group">
+                    <label for="">Anotación</label>
+                    <textarea class="summernote" id="comments" class="form-control" rows="3" required="required"></textarea>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <button id="saveComment" type="button" class="btn btn-primary">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{#extend "js"}}
+    <script type="text/javascript">
+    const users_session = parseInt("{{users}}");
+    </script>
+    <script type="text/javascript" src="/public/tools/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+    <script type="text/javascript" src="/public/tools/summernote/dist/summernote.js"></script>
+    <script type="text/javascript" src="/public/js/comments/controller.js"></script>
+    <script type="text/javascript" src="/public/js/comments/main.js"></script>
+{{/extend}}

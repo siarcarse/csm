@@ -6,7 +6,7 @@ const student = [{
     config: {
         handler: (request, reply) => {
             var select = `SELECT id, name, lastname, rut, gender, to_char(birthdate, 'YYYY-MM-DD') AS birthdate,
-                          address
+                          address, enrollment
                           FROM persons
                           WHERE type='alumno'`;
             request.pg.client.query(select, (err, result) => {
@@ -93,8 +93,9 @@ const student = [{
             let rut = request.payload.rut;
             let gender = request.payload.gender;
             let address = request.payload.address;
-            let sql = `INSERT INTO persons (name, lastname,rut, birthdate, gender, address, type)
-                        VALUES ('${name}', '${lastname}', '${rut}', '${birthdate}', '${gender}', '${address}', 'alumno')`;
+            let enrollment = request.payload.enrollment;
+            let sql = `INSERT INTO persons (name, lastname,rut, birthdate, gender, address, type, enrollment)
+                        VALUES ('${name}', '${lastname}', '${rut}', '${birthdate}', '${gender}', '${address}', 'alumno', ${enrollment})`;
             request.pg.client.query(sql, (err, result) => {
                 if (err) {
                     reply({ message: err });
@@ -110,6 +111,7 @@ const student = [{
                 lastname: Joi.string().min(1).max(60),
                 birthdate: Joi.string(),
                 gender: Joi.string().min(1).max(2),
+                enrollment: Joi.number().min(1),
                 address: Joi.string()
             })
         },
@@ -126,7 +128,7 @@ const student = [{
                           AND type='alumno'`;
             request.pg.client.query(sql, (err, result) => {
                 if (err) {
-                    return reply(err);    
+                    return reply(err);
                 }
 
                 let persons = result.rows;
@@ -136,6 +138,65 @@ const student = [{
         validate: {
             params: {
                 course: Joi.number().min(0)
+            }
+        },
+        auth: false
+    }
+}, {
+    method: 'GET',
+    path: '/api/student/course_lesson/{course_lesson}',
+    config: {
+        handler: (request, reply) => {
+            var select = `SELECT * 
+                          FROM persons 
+                          WHERE id IN (
+                            SELECT student 
+                            FROM course_student 
+                            WHERE course IN (
+                                SELECT course 
+                                FROM course_lesson 
+                                WHERE id=$1))`;
+            request.pg.client.query(select, [encodeURIComponent(request.params.course_lesson)], (err, result) => {
+                let course_lesson = result.rows;
+                return reply(course_lesson);
+            })
+        },
+        validate: {
+            params: {
+                course_lesson: Joi.number().min(0)
+            }
+        },
+        auth: false
+    }
+}, {
+    method: 'GET',
+    path: '/api/student/{enrollment}/enrollment/{id}',
+    config: {
+        handler: (request, reply) => {
+            let enrollment = encodeURIComponent(request.params.enrollment);
+            let id = encodeURIComponent(request.params.id);
+            if (parseInt(id) === 0) {
+                var sql = `SELECT id
+                          FROM persons 
+                          WHERE enrollment = ${enrollment}`;
+            } else {
+                var sql = `SELECT id
+                          FROM persons 
+                          WHERE enrollment = ${enrollment} AND id != ${id}`;
+            }
+            request.pg.client.query(sql, (err, result) => {
+                if (err) {
+                    return reply(err);
+                }
+
+                let persons = result.rows[0];
+                return reply(persons);
+            })
+        },
+        validate: {
+            params: {
+                enrollment: Joi.number().min(1),
+                id: Joi.number()
             }
         },
         auth: false
@@ -200,8 +261,9 @@ const student = [{
             let rut = request.payload.rut;
             let gender = request.payload.gender;
             let address = request.payload.address;
+            let enrollment = request.payload.enrollment;
             let sql = `UPDATE persons SET name = '${name}', lastname = '${lastname}',rut = '${rut}',
-                       birthdate = '${birthdate}', gender = '${gender}', address = '${address}'
+                       birthdate = '${birthdate}', gender = '${gender}', address = '${address}', enrollment=${enrollment}
                        WHERE id = ${id}`;
             request.pg.client.query(sql, (err, result) => {
                 if (err) {
@@ -221,6 +283,7 @@ const student = [{
                 lastname: Joi.string().min(1).max(60),
                 birthdate: Joi.string(),
                 gender: Joi.string().min(1).max(2),
+                enrollment: Joi.number().min(1),
                 address: Joi.string()
             })
         },

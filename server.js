@@ -1,7 +1,7 @@
 import hapi from 'hapi';
 import Inert from 'inert';
 import Vision from 'vision';
-import hapiAuthCookie from 'hapi-auth-cookie'; // http://git.io/vT5dZ
+import hapiAuthCookie from 'hapi-auth-cookie';
 import handlebars from 'handlebars';
 import extend from 'handlebars-extend-block';
 

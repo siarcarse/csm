@@ -5,7 +5,7 @@ const users = [{
     path: '/api/users/{param*}',
     config: {
         handler: (request, reply) => {
-            var select = `SELECT u.id, u.username, u.name, u.lastname, 
+            var select = `SELECT u.id, u.username, u.name, u.lastname, u.rut,
                             u.mail, r.name AS role_name, r.id AS roleid, 
                             u.state, u.phone, u.password, to_char(u.birthdate, 'YYYY-MM-DD') AS birthdate
                             FROM users AS u
@@ -59,8 +59,9 @@ const users = [{
             let mail = request.payload.mail;
             let password = request.payload.password;
             let phone = request.payload.phone;
-            let sql = `INSERT INTO users (username, name, lastname, birthdate, role, password, mail, phone, state)
-                        VALUES ('${username}', '${name}', '${lastname}', '${birthdate}', ${role}, '${password}', '${mail}', ${phone}, 'activo')`;
+            let rut = request.payload.rut;
+            let sql = `INSERT INTO users (username, name, lastname, birthdate, role, password, mail, phone, state, rut)
+                        VALUES ('${username}', '${name}', '${lastname}', '${birthdate}', ${role}, '${password}', '${mail}', ${phone}, 'activo', '${rut}')`;
             request.pg.client.query(sql, (err, result) => {
                 if (err) {
                     reply({ message: err });
@@ -74,6 +75,7 @@ const users = [{
                 username: Joi.string().required().min(1).max(60),
                 name: Joi.string().min(1).max(60),
                 lastname: Joi.string().min(1).max(60),
+                rut: Joi.string().min(1).max(13),
                 birthdate: Joi.string(),
                 role: Joi.number().min(1).max(60),
                 password: Joi.string().required().min(1).max(100),
@@ -97,8 +99,9 @@ const users = [{
             let mail = request.payload.mail;
             let password = request.payload.password;
             let phone = request.payload.phone;
+            let rut = request.payload.rut;
             let sql = `UPDATE users SET username = '${username}', name = '${name}', lastname = '${lastname}',
-            birthdate = '${birthdate}', role = ${role}, password = '${password}', mail = '${mail}', phone = ${phone}
+            birthdate = '${birthdate}', role = ${role}, password = '${password}', mail = '${mail}', phone = ${phone}, rut = '${rut}'
             WHERE id=${id}`;
             request.pg.client.query(sql, (err, result) => {
                 if (err) {
@@ -116,6 +119,7 @@ const users = [{
                 username: Joi.string().required().min(1).max(60),
                 name: Joi.string().min(1).max(60),
                 lastname: Joi.string().min(1).max(60),
+                rut: Joi.string().min(1).max(13),
                 birthdate: Joi.string(),
                 role: Joi.number().required().min(1).max(60),
                 password: Joi.string().required().min(1).max(100),

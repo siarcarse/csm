@@ -20,9 +20,25 @@ let controller = {
                     $(el).parent().addClass('has-error');
                     err = true;
                 }
+            } else if ($(el).attr('id') === 'enrollment') {
+                if (parseInt($(el).val()) === 0) {
+                    $(el).parent().addClass('has-error');
+                    err = true;
+                }
             }
         });
         cb(err);
+    },
+    verifyEnrollment: (enrollment, id, cb) => {
+        $.ajax({
+                url: 'api/student/' + enrollment + '/enrollment/' + id,
+                type: 'GET',
+                dataType: 'json'
+            })
+            .done(function(data) {
+                cb(data);
+            });
+
     },
     limitText: (field, maxChar) => {
         var ref = $(field),

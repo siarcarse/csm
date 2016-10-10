@@ -14,3 +14,7 @@
 .modal-wide .modal-body {
     overflow-y: auto;
 }
+
+.fa-select {
+    font-family: Arial, 'FontAwesome';
+}

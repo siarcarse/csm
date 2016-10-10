@@ -26,7 +26,6 @@ const course_student = [{
     path: '/api/course_student/{id}',
     config: {
         handler: (request, reply) => {
-            console.log();
             var select = `SELECT * FORM course_student
                           WHERE course_student.id = $1
                           ORDER BY id ASC`;

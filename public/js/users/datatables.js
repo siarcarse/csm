@@ -17,6 +17,7 @@ $(document).ready(function() {
             { "data": "role_name" },
             { "data": "name" },
             { "data": "lastname" },
+            { "data": "rut" },
             { "data": "mail" },
             { "data": "state" }
         ],

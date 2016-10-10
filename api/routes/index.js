@@ -9,6 +9,7 @@ import course_lesson_teacherAPI from './course_lesson_teacher/course_lesson_teac
 import studentAPI from './student/student-api'
 import teacherAPI from './teacher/teacher-api'
 import parentAPI from './parent/parent-api'
+import person_commentAPI from './person_comment/person_comment-api'
 
 const rulesAPI = [].concat(
     usersAPI,
@@ -21,6 +22,7 @@ const rulesAPI = [].concat(
     parentAPI,
     course_lessonAPI,
     course_studentAPI,
-    course_lesson_teacherAPI
+    course_lesson_teacherAPI,
+    person_commentAPI
 );
 export default rulesAPI;

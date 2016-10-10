@@ -1,8 +1,25 @@
 $(document).ready(function() {
+
+    $("#enrollment").numeric({ decimal: false, negative: false }); //Control numeric Input
     //Reset state error un click inputs
     $('#crudForm :input').click(function(event) {
         $(this).parent().removeClass('has-error');
+        if ($(this).attr('id') === 'enrollment') {
+            $('#enrollment').attr('data-error', 'false');
+        }
     });
+    $('#rut').Rut({
+        on_error: () => {
+            $('#rut').parent().addClass('has-error');
+            global.sendMessage('danger', 'Rut Invalido!');
+            $('#saveButton').attr('disabled', 'disabled');
+        },
+        on_success: ()=> {
+            $('#rut').parent().removeClass('has-error');
+            $('#saveButton').removeAttr('disabled');
+        }
+    });
+
     $('#crud-modal').on('hidden.bs.modal', () => { //Modal on Hide, reset inputs
         controller.resetFormInputs();
     });
@@ -27,26 +44,35 @@ $(document).ready(function() {
         let gender = $('#gender').val();
         let address = $('#address').val();
         let birthdate = $('#birthdate').val();
+        let enrollment = $('#enrollment').val();
         controller.validate((err) => {
             if (!err) {
-                let id = $(this).attr('data-update');
-                $(this).attr('data-update', '');
-                let method = 'POST';
-                let url = '/api/student';
-                if (id) {
-                    method = 'PUT';
-                    url = '/api/student/' + id;
-                } else {
-                    method = 'POST';
-                    url = '/api/student';
-                }
-                $('#crud-modal').modal('hide');
-                $.ajax({
-                    url: url,
-                    type: method,
-                    data: { name, lastname, gender, rut, birthdate, address },
-                }).done(function(data) {
-                    datatable.ajax.reload();
+                let idValidate = $('#saveButton').attr('data-update') || 0;
+                controller.verifyEnrollment(enrollment, idValidate, (data) => { // VALIDO QUE EL NUMERO DE MATRICULA SEA UNICO
+                    if (!data) {
+                        let id = $(this).attr('data-update');
+                        $(this).attr('data-update', '');
+                        let method = 'POST';
+                        let url = '/api/student';
+                        if (id) {
+                            method = 'PUT';
+                            url = '/api/student/' + id;
+                        } else {
+                            method = 'POST';
+                            url = '/api/student';
+                        }
+                        $('#crud-modal').modal('hide');
+                        $.ajax({
+                            url: url,
+                            type: method,
+                            data: { name, lastname, gender, rut, birthdate, address, enrollment },
+                        }).done(function(data) {
+                            datatable.ajax.reload();
+                        });
+                    } else {
+                        $('#enrollment').parent().addClass('has-error');
+                        global.sendMessage('danger', 'Número de matricula ya esta asociado a otro alumno. Verifique su información...');
+                    }
                 });
             }
         });

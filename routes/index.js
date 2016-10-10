@@ -5,6 +5,7 @@ import courses from './courses';
 import course_lesson from './course_lesson';
 import student from './student';
 import parent from './parent';
+import comments from './comments';
 import user from './user';
 import { cookie_options } from '../config/config';
 import login from './handlers/loginHandler'
@@ -53,5 +54,20 @@ const Logout = {
         handler: logout
     }
 };
-const rules = [].concat(Public, Index, Login, Logout, role, level, lesson, courses, course_lesson, user, student, parent, API);
+const rules = [].concat(
+    Public,
+    Index,
+    Login,
+    Logout,
+    role,
+    level,
+    lesson,
+    courses,
+    course_lesson,
+    user, 
+    student,
+    parent,
+    comments,
+    API,
+);
 export default rules;
