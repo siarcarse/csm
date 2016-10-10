@@ -51,7 +51,12 @@ server.register([Vision,
     //Load Routes
     server.route(routes);
 });
-
+server.ext('onPreResponse', function(request, reply) {
+    if (request.response.source && request.response.source.context) {
+        request.response.source.context.credentials = request.auth.credentials;
+    }
+    reply.continue();
+});
 server.views({
     engines: {
         html: {
@@ -62,7 +67,7 @@ server.views({
     path: 'views',
     layoutPath: 'views/layout',
     layout: 'default',
-    //helpersPath: 'views/helpers',
+    helpersPath: 'views/helpers',
     partialsPath: 'views/partials'
 });
 

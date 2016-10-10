@@ -5,9 +5,7 @@ const userRules = [{
         handler: (request, reply) => {
             let columns = ['Usuario', 'Rol', 'Nombre', 'Apellidos', 'Rut', 'Mail', 'Estado'];
             return reply.view('administration/users', { columns });
-        },
-        auth: { mode: 'try' },
-        plugins: { 'hapi-auth-cookie': { redirectTo: false } }
+        }
     }
 }, {
     method: 'GET',

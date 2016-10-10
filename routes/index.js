@@ -18,9 +18,11 @@ const Index = {
     path: '/',
     config: {
         handler: function(request, reply) {
+            var credentials = request.auth.credentials;
             var data = {
                 title: 'Bienvenido!',
-                message: 'Intranet Académica Colegio Santa Madre de Dios'
+                message: 'Intranet Académica Colegio Santa Madre de Dios',
+                credentials
             };
             return reply.view('index', data);
         }
@@ -64,7 +66,7 @@ const rules = [].concat(
     lesson,
     courses,
     course_lesson,
-    user, 
+    user,
     student,
     parent,
     comments,

@@ -17,7 +17,8 @@ const login = function(request, reply) {
         } else {
             let username = request.payload.username;
             let password = request.payload.password;
-            let sql = `SELECT * FROM users 
+            let sql = `SELECT users.*, role.name AS rolename FROM users
+                       LEFT JOIN role ON role.id=users.role
                        WHERE username = '${username}' 
                        AND password = '${password}' 
                        AND state = 'activo'`;
