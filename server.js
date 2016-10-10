@@ -54,7 +54,10 @@ server.register([Vision,
 
 server.views({
     engines: {
-        html: extend(handlebars)
+        html: {
+            module: extend(handlebars),
+            isCached: false
+        }
     },
     path: 'views',
     layoutPath: 'views/layout',

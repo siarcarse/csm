@@ -27,8 +27,8 @@
   "scripts": {
     "lint": "eslint server.js",
     "start": "babel-node ./server.js",
-    "auto-start": "nodemon --exec \"npm start\" --ignore public/javascript -e js,ejs,html"
+    "auto-start": "nodemon --exec \"npm start\" --ignore public/"
   },
-  "author": "siarcarse y fco_lo",
+  "author": "siarcarse",
   "license": "ISC"
 }

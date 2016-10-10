@@ -19,8 +19,8 @@ const Index = {
     config: {
         handler: function(request, reply) {
             var data = {
-                title: 'This is Index!',
-                message: 'Hello, World. You crazy handlebars layout'
+                title: 'Bienvenido!',
+                message: 'Intranet Académica Colegio Santa Madre de Dios'
             };
             return reply.view('index', data);
         }
