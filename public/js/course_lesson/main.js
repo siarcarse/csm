@@ -8,59 +8,29 @@ $(document).ready(function() {
     $('#crudForm :input').click(function(event) {
         $(this).parent().removeClass('has-error');
     });
-    $('#crud-modal').on('hidden.bs.modal', () => { //Modal on Hide, reset inputs
-        controller.resetFormInputs();
+    $('#ihour, #ehour').timepicker({
+        minuteStep: 5,
+        showSeconds: false,
+        showMeridian: false
     });
-
-    $('#edit-crud').click(function(event) {
-        let rowSelected = datatable.rows('.selected').data();
-        if (rowSelected.length === 1) {
-            controller.editFormData(rowSelected[0]); // Lleno el formulario y abro el Modal
-            $('#crud-modal').modal('show');
-            $('#saveButton').attr('data-update', rowSelected[0].id);
-        } else if (rowSelected.length === 0) {
-            global.sendMessage('info', 'Debes Seleccionar almenos un registro!');
-        } else if (rowSelected.length > 1) {
-            global.sendMessage('danger', 'Solo puedes editar 1 registro a la vez!');
+    $('#day').click(function(event) {
+        $(this).parent().removeClass('has-error');
+    });
+    $('#add').click(function(event) {
+        var day = $('#day').val();
+        if (parseInt(day) !== 0) {
+            var course_lesson = $(this).attr('data-id');
+            var ihour = $('#ihour').val();
+            var ehour = $('#ehour').val();
+            $.post('/api/course_lesson_schedule', { course_lesson, day, ihour, ehour }, function(data, textStatus, xhr) {
+                controller.makeTableSchedules(course_lesson);
+            });
+        }else {
+            $('#day').parent().addClass('has-error');
         }
-
     });
-    $('#saveButton').click(function(event) {
-        let level = $('#level').val();
-        let year = $('#year').val();
-        controller.validate((err) => {
-            if (!err) {
-                let id = $(this).attr('data-update');
-                $(this).attr('data-update', '');
-                let method = 'POST';
-                let url = '/api/courses';
-                if (id) {
-                    method = 'PUT';
-                    url = '/api/courses/' + id;
-                } else {
-                    method = 'POST';
-                    url = '/api/courses';
-                }
-                $('#crud-modal').modal('hide');
-                $.ajax({
-                    url: url,
-                    type: method,
-                    data: { level, year },
-                }).done(function(data) {
-                    datatable.ajax.reload();
-                });
-            }
-        });
-    });
-    $('#delete-crud').click((event) => {
-        let rowSelected = datatable.rows('.selected').data();
-        let id = rowSelected[0].id;
-        $.ajax({
-            url: '/api/courses/' + id,
-            type: 'DELETE',
-        }).done((data) => {
-            datatable.ajax.reload();
-        });
+    $('#schedule-modal').on('hidden.bs.modal', () => { //Modal on Hide, reset inputs
+        datatable.ajax.reload();
     });
     $('#courses').change(function(event) {
         let course = parseInt($(this).val());

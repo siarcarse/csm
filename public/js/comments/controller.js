@@ -14,7 +14,12 @@ let controller = {
         cb(err);
     },
     loadSelectCourse: () => {
-        $.get('/api/course_lesson/', (data) => {
+        if (credentials.rolename === 'Administrador') {
+            var apiPath = '/api/course_lesson/';
+        } else {
+            var apiPath = '/api/course_lesson/' + credentials.id + '/teacher/';
+        }
+        $.get(apiPath, (data) => {
             var $select = $('#courses');
             $select.empty();
             $select.append($("<option></option>")

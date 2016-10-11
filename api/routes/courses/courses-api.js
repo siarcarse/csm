@@ -1,5 +1,6 @@
 import Joi from 'joi';
 import Boom from 'boom';
+import Moment from 'moment';
 const courses = [{
     method: 'GET',
     path: '/api/courses/{param*}',
@@ -18,10 +19,31 @@ const courses = [{
             query: Joi.object().keys({
                 _: Joi.number().min(0)
             })
+        }
+    }
+}, {
+    method: 'GET',
+    path: '/api/courses/{teacher}/teacher',
+    config: {
+        handler: (request, reply) => {
+            var year = Moment().format('YYYY');
+            var select = `SELECT courses.id, level.name AS level_name, courses.year 
+                          FROM courses
+                          LEFT JOIN level ON level.id=courses.level 
+                          WHERE courses.id IN (
+                            SELECT course FROM course_lesson WHERE id IN (
+                                SELECT course_lesson FROM course_lesson_teacher WHERE teacher=$1)) AND courses.year=$2
+                          ORDER BY id ASC`;
+            request.pg.client.query(select, [encodeURIComponent(request.params.teacher), year], (err, result) => {
+                let user = result.rows;
+                return reply(user);
+            })
         },
-        auth: false
-            /*auth: { mode: 'try' },
-            plugins: { 'hapi-auth-cookie': { redirectTo: false } }*/
+        validate: {
+            params: {
+                teacher: Joi.number().min(0)
+            }
+        }
     }
 }, {
     method: 'GET',
@@ -42,8 +64,7 @@ const courses = [{
             params: {
                 id: Joi.number().min(0)
             }
-        },
-        auth: false
+        }
     }
 }, {
     method: 'GET',
@@ -65,8 +86,7 @@ const courses = [{
             params: {
                 year: Joi.number().min(2016)
             }
-        },
-        auth: false
+        }
     }
 }, {
     method: 'POST',
@@ -90,8 +110,7 @@ const courses = [{
                 level: Joi.number().required().min(1).max(60),
                 year: Joi.number().required().min(2016).max(2116),
             })
-        },
-        auth: false
+        }
     }
 }, {
     method: 'PUT',
@@ -119,8 +138,7 @@ const courses = [{
                 level: Joi.number().required().min(1).max(60),
                 year: Joi.number().required().min(2016).max(2116),
             })
-        },
-        auth: false
+        }
     }
 }, {
     method: 'DELETE',
@@ -140,8 +158,7 @@ const courses = [{
             params: {
                 id: Joi.number()
             }
-        },
-        auth: false
+        }
     }
 }];
 export default courses;

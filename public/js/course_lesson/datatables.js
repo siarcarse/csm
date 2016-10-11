@@ -18,7 +18,8 @@ $(document).ready(function() {
             { "data": "lesson" },
             { "data": "course" },
             { "data": "year" },
-            { "data": "teachers" }
+            { "data": "teachers" },
+            { "data": "schedule" }
         ],
         "responsive": true,
         "serverSide": false,
@@ -27,10 +28,10 @@ $(document).ready(function() {
         "bInfo": false,
         "bLengthChange": true,
         "select": {
-            style: 'multi'
+            style: 'single'
         },
         "createdRow": function(row, data, index) {
-            if ($('td', row).last().text() !== '') {
+            if ($('td', row).last().prev().text() !== '') {
                 if (parseInt(data.teachers) > 0) {
                     var className = 'success';
                 } else {
@@ -38,6 +39,16 @@ $(document).ready(function() {
                 }
                 var image = '<i class="fa fa-graduation-cap" aria-hidden="true"></i>';
                 var button = "<button onclick='controller.loadTeacherInput(" + data.id + ", " + '"Profesores ' + data.lesson + ' ' + data.course + ' ' + data.year + '"' + ");' class='btn btn-" + className + "' data-toggle='modal' href='#assoc-modal'>" + image + "</button>";
+                $('td', row).last().prev().addClass('text-center').html(button);
+            }
+            if ($('td', row).last().text() !== '') {
+                if (parseInt(data.schedule) > 0) {
+                    var className = 'success';
+                } else {
+                    var className = 'default';
+                }
+                var image = '<i class="fa fa-calendar-plus-o" aria-hidden="true"></i>';
+                var button = "<button onclick='controller.loadScheduleInput(" + data.id + ", " + '"Horario ' + data.lesson + ' ' + data.course + ' ' + data.year + '"' + ");' class='btn btn-" + className + "' data-toggle='modal' href='#schedule-modal'>" + image + "</button>";
                 $('td', row).last().addClass('text-center').html(button);
             }
         }

@@ -209,7 +209,7 @@ const student = [{
             var select = `SELECT id, (rut || ' ' || name || ' ' || lastname) AS name
                           FROM persons 
                           WHERE id IN (SELECT student FROM course_student WHERE course=$1)
-                          AND type='alumno'`;
+                          AND type='alumno' ORDER BY lastname`;
             request.pg.client.query(select, [encodeURIComponent(request.params.course)], (err, result) => {
                 let persons = result.rows;
                 return reply(persons);

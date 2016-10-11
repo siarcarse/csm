@@ -46,8 +46,8 @@ const lesson = [{
                           FROM lesson 
                           WHERE id NOT IN (SELECT lesson FROM course_lesson WHERE course=$1)`;
             request.pg.client.query(select, [encodeURIComponent(request.params.course)], (err, result) => {
-                let user = result.rows;
-                return reply(user);
+                let lesson = result.rows;
+                return reply(lesson);
             })
         },
         validate: {
@@ -66,13 +66,35 @@ const lesson = [{
                           FROM lesson 
                           WHERE id IN (SELECT lesson FROM course_lesson WHERE course=$1)`;
             request.pg.client.query(select, [encodeURIComponent(request.params.course)], (err, result) => {
-                let user = result.rows;
-                return reply(user);
+                let lesson = result.rows;
+                return reply(lesson);
             })
         },
         validate: {
             params: {
                 course: Joi.number().min(0)
+            }
+        },
+        auth: false
+    }
+}, {
+    method: 'GET',
+    path: '/api/lesson/courses/{course}/teacher/{teacher}',
+    config: {
+        handler: (request, reply) => {
+            var select = `SELECT id, name FROM lesson 
+                          WHERE id IN (
+                            SELECT lesson FROM course_lesson WHERE course=$1 AND id IN (
+                                SELECT course_lesson FROM course_lesson_teacher WHERE teacher=$2))`;
+            request.pg.client.query(select, [encodeURIComponent(request.params.course), encodeURIComponent(request.params.teacher)], (err, result) => {
+                let lesson = result.rows;
+                return reply(lesson);
+            })
+        },
+        validate: {
+            params: {
+                course: Joi.number().min(1),
+                teacher: Joi.number().min(1)
             }
         },
         auth: false

@@ -27,7 +27,7 @@ $(document).ready(function() {
         "bInfo": false,
         "bLengthChange": true,
         "select": {
-            style: 'multi'
+            style: 'single'
         },
         "createdRow": function(row, data, index) {
             if ($('td', row).last().prev().text() !== '') {

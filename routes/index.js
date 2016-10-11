@@ -3,9 +3,11 @@ import level from './level';
 import lesson from './lesson';
 import courses from './courses';
 import course_lesson from './course_lesson';
+import course_lesson_teacher from './course_lesson_teacher';
 import student from './student';
 import parent from './parent';
 import comments from './comments';
+import grades from './grades';
 import user from './user';
 import { cookie_options } from '../config/config';
 import login from './handlers/loginHandler'
@@ -56,6 +58,21 @@ const Logout = {
         handler: logout
     }
 };
+const Password = {
+    method: 'GET',
+    path: '/change_password',
+    config: {
+        handler: function(request, reply) {
+            var credentials = request.auth.credentials;
+            var data = {
+                title: 'Bienvenido!',
+                message: 'Intranet Académica Colegio Santa Madre de Dios',
+                credentials
+            };
+            return reply.view('password', data);
+        }
+    }
+};
 const rules = [].concat(
     Public,
     Index,
@@ -70,6 +87,9 @@ const rules = [].concat(
     student,
     parent,
     comments,
-    API,
+    grades,
+    Password,
+    course_lesson_teacher,
+    API
 );
 export default rules;

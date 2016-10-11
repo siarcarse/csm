@@ -1,0 +1,56 @@
+{{!< layout/default}}
+{{#extend "css"}}
+    <link rel="stylesheet" type="text/css" href="/public/tools/bootstrap-select/dist/css/bootstrap-select.min.css">
+    <link rel="stylesheet" type="text/css" href="/public/tools/summernote/dist/summernote.css">
+{{/extend}}
+{{> header}}
+<h3 class="text-center">Ingreso de Notas</h3>
+<br>
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <h3 class="panel-title">Complete los datos</h3>
+    </div>
+    <div id="crudForm" class="panel-body">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                <div class="form-group">
+                    <label for="">Seleccione Curso</label>
+                    <select name="" id="courses" class="form-control" required="required">
+                    </select>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                <div class="form-group">
+                    <label for="">Seleccione Asignatura</label>
+                    <select name="" id="lesson" class="form-control" required="required">
+                    </select>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <table class="table table-condensed" style="zoom: 90%;">
+                    <thead>
+                        <tr>
+                            <th>Alumno</th>
+                            <th>Nota</th>
+                        </tr>
+                    </thead>
+                    <tbody id="student-data">
+                        
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <button id="saveComment" type="button" class="btn btn-primary">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+{{#extend "js"}}
+    <script type="text/javascript">
+    const credentials = JSON.parse('{{{ parseJson credentials}}}');
+    const users_session = parseInt("{{users}}");
+    </script>
+    <script type="text/javascript" src="/public/tools/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+    <script type="text/javascript" src="/public/js/grades/controller.js"></script>
+    <script type="text/javascript" src="/public/js/grades/main.js"></script>
+{{/extend}}

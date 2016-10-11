@@ -19,9 +19,7 @@ const users = [{
             query: Joi.object().keys({
                 _: Joi.number().min(0)
             })
-        },
-        auth: { mode: 'try' },
-        plugins: { 'hapi-auth-cookie': { redirectTo: false } }
+        }
     }
 }, {
     method: 'GET',
@@ -82,8 +80,7 @@ const users = [{
                 mail: Joi.string().email(),
                 phone: Joi.number()
             })
-        },
-        auth: false
+        }
     }
 }, {
     method: 'PUT',
@@ -126,8 +123,7 @@ const users = [{
                 mail: Joi.string().email(),
                 phone: Joi.number()
             })
-        },
-        auth: false
+        }
     }
 }, {
     method: 'DELETE',
@@ -147,8 +143,7 @@ const users = [{
             params: {
                 id: Joi.number()
             }
-        },
-        auth: false
+        }
     }
 }];
 export default users;

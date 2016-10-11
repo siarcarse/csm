@@ -12,8 +12,8 @@ const course_lesson = [{
                           LEFT JOIN lesson ON lesson.id=course_lesson.lesson
                           ORDER BY level.id ASC`;
             request.pg.client.query(select, (err, result) => {
-                if(err) {
-                    return reply(err);    
+                if (err) {
+                    return reply(err);
                 }
                 let course_lesson = result.rows;
                 return reply(course_lesson);
@@ -23,10 +23,29 @@ const course_lesson = [{
             query: Joi.object().keys({
                 _: Joi.number().min(0)
             })
+        }
+    }
+}, {
+    method: 'GET',
+    path: '/api/course_lesson/{teacher}/teacher/',
+    config: {
+        handler: (request, reply) => {
+            var select = `SELECT course_lesson.id, courses.year, level.name AS course, lesson.name AS lesson
+                          FROM course_lesson
+                          LEFT JOIN courses ON courses.id=course_lesson.course
+                          LEFT JOIN lesson ON lesson.id=course_lesson.lesson
+                          LEFT JOIN level ON level.id=courses.level
+                          WHERE course_lesson.id IN (SELECT course_lesson FROM course_lesson_teacher WHERE teacher=$1)`;
+            request.pg.client.query(select, [encodeURIComponent(request.params.teacher)], (err, result) => {
+                let course_lesson = result.rows;
+                return reply(course_lesson);
+            })
         },
-        auth: false
-            /*auth: { mode: 'try' },
-            plugins: { 'hapi-auth-cookie': { redirectTo: false } }*/
+        validate: {
+            params: {
+                teacher: Joi.number().min(1)
+            }
+        }
     }
 }, {
     method: 'GET',
@@ -40,12 +59,13 @@ const course_lesson = [{
                           LEFT JOIN lesson ON lesson.id=course_lesson.lesson
                           WHERE courses.id=$1
                           ORDER BY level.id ASC`;*/
-            var select = `SELECT course_lesson.id, level.name AS course, courses.year, lesson.name AS lesson, COUNT(course_lesson_teacher.teacher) AS teachers
+            var select = `SELECT course_lesson.id, level.name AS course, courses.year, lesson.name AS lesson, COUNT(course_lesson_teacher.teacher) AS teachers, COUNT(course_lesson_schedule.course_lesson) AS schedule
                           FROM course_lesson
                           LEFT JOIN courses ON courses.id=course_lesson.course
                           LEFT JOIN level ON level.id=courses.level
                           LEFT JOIN lesson ON lesson.id=course_lesson.lesson
                           LEFT JOIN course_lesson_teacher ON course_lesson_teacher.course_lesson=course_lesson.id
+                          LEFT JOIN course_lesson_schedule ON course_lesson_schedule.course_lesson=course_lesson.id
                           WHERE courses.id=$1
                           GROUP BY course_lesson.id, level.name, courses.year, lesson.name, level.id
                           ORDER BY level.id ASC`;
@@ -58,8 +78,7 @@ const course_lesson = [{
             params: {
                 course: Joi.number().min(0)
             }
-        },
-        auth: false
+        }
     }
 }, {
     method: 'POST',
@@ -83,8 +102,7 @@ const course_lesson = [{
                 course: Joi.number().required().min(1),
                 lesson: Joi.number().required(),
             })
-        },
-        auth: false
+        }
     }
 }, {
     method: 'PUT',
@@ -112,8 +130,7 @@ const course_lesson = [{
                 level: Joi.number().required().min(1),
                 year: Joi.number().required().min(2016).max(2116),
             })
-        },
-        auth: false
+        }
     }
 }, {
     method: 'DELETE',
@@ -136,8 +153,7 @@ const course_lesson = [{
                 course: Joi.number().required(),
                 lesson: Joi.number().required(),
             })
-        },
-        auth: false
+        }
     }
 }];
 export default course_lesson;
