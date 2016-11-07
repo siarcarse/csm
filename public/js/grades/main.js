@@ -29,19 +29,56 @@ $(document).ready(function() {
         let course = $('#courses').val();
         controller.loadStudents(course);
     });
-    $('#saveComment').click(function(event) {
+    $('#saveGrade').click(function(event) {
+        var nullTextGrades = '',
+            studentGrades = [],
+            grade, student;
+        //var personGrades = {};
+        $('.gradeToSave', $('#student-data')).each(function(index, el) {
+            grade = parseFloat($(el).val()) || 0;
+            if (grade <= 0) {
+                nullTextGrades = 'existen notas vacias, ';
+            }
+            student = parseInt($(el).parent().siblings().first().attr('id'));
+            if (student) {
+                studentGrades.push({ student, grade });
+            }
+        });
         controller.validate(function(err) {
             if (!err) {
-                let comment = $('.summernote').summernote('code');
-                let course_lesson = $('#courses').val();
-                let student = $('#student').val();
-                let type = $('#type').val();
-                let date = moment().format('YYYY-MM-DD HH:mm:ss');
-                $.post('/api/person_comment', { comment, course_lesson, student, type, date, teacher: users_session }, function(data, textStatus, xhr) {
-                    controller.loadSelectCourse();
-                    $('.summernote').summernote('reset');
-                    $('#type, #student').selectpicker('val', 0);
-                    global.sendMessage('success', 'Anotación ingresada con éxito!');
+                x0p({
+                    title: 'Ingreso de Notas',
+                    text: 'Favor revisar información, ' + nullTextGrades + 'desea continuar?',
+                    icon: 'warning',
+                    animationType: 'fadeIn',
+                    buttons: [{
+                        type: 'cancel',
+                        text: 'Cancelar',
+                    }, {
+                        type: 'info',
+                        text: 'Continuar',
+                        showLoading: true
+                    }]
+                }).then(function(data) {
+                    if (data.button == 'info') {
+                        // Simulate Delay
+                        setTimeout(function() {
+                            x0p('Datos guardados', null, 'ok', false);
+                        }, 1500);
+                        let lesson = $('#lesson').val();
+                        let course = $('#course').val();
+                        let date = moment().format('YYYY-MM-DD HH:mm:ss');
+                        let grades = {
+                            course,
+                            lesson,
+                        }
+                        /*$.post('/api/person_comment', { comment, course_lesson, student, type, date, teacher: users_session }, function(data, textStatus, xhr) {
+                            controller.loadSelectCourse();
+                            $('.summernote').summernote('reset');
+                            $('#type, #student').selectpicker('val', 0);
+                            global.sendMessage('success', 'Anotación ingresada con éxito!');
+                        });*/
+                    }
                 });
             }
         });

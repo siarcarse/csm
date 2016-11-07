@@ -2,6 +2,7 @@
 {{#extend "css"}}
     <link rel="stylesheet" type="text/css" href="/public/tools/bootstrap-select/dist/css/bootstrap-select.min.css">
     <link rel="stylesheet" type="text/css" href="/public/tools/summernote/dist/summernote.css">
+    <link rel="stylesheet" type="text/css" href="/public/tools/x0popup/dist/x0popup.min.css">
 {{/extend}}
 {{> header}}
 <h3 class="text-center">Ingreso de Notas</h3>
@@ -40,7 +41,7 @@
                 </table>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <button id="saveComment" type="button" class="btn btn-primary">Guardar</button>
+                <button id="saveGrade" type="button" class="btn btn-primary">Guardar</button>
             </div>
         </div>
     </div>
@@ -50,6 +51,7 @@
     const credentials = JSON.parse('{{{ parseJson credentials}}}');
     const users_session = parseInt("{{users}}");
     </script>
+    <script type="text/javascript" src="/public/tools/x0popup/dist/x0popup.min.js"></script>
     <script type="text/javascript" src="/public/tools/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
     <script type="text/javascript" src="/public/js/grades/controller.js"></script>
     <script type="text/javascript" src="/public/js/grades/main.js"></script>

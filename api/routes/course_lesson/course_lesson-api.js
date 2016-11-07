@@ -1,5 +1,7 @@
 import Joi from 'joi';
 import Boom from 'boom';
+import Moment from 'moment';
+
 const course_lesson = [{
     method: 'GET',
     path: '/api/course_lesson/{param*}',
@@ -77,6 +79,54 @@ const course_lesson = [{
         validate: {
             params: {
                 course: Joi.number().min(0)
+            }
+        }
+    }
+}, {
+    method: 'GET',
+    path: '/api/course_lesson/{course}/teacher/{teacher}',
+    config: {
+        handler: (request, reply) => {
+            var year = Moment().format('YYYY');
+            if (parseInt(request.params.course) === 0) {
+                var select = `SELECT course_lesson.id, level.name AS course, courses.year, lesson.name AS lesson, COUNT(course_lesson_teacher.teacher) AS teachers, COUNT(course_lesson_schedule.course_lesson) AS schedule
+                          FROM course_lesson
+                          LEFT JOIN courses ON courses.id=course_lesson.course
+                          LEFT JOIN level ON level.id=courses.level
+                          LEFT JOIN lesson ON lesson.id=course_lesson.lesson
+                          LEFT JOIN course_lesson_teacher ON course_lesson_teacher.course_lesson=course_lesson.id
+                          LEFT JOIN course_lesson_schedule ON course_lesson_schedule.course_lesson=course_lesson.id
+                          WHERE courses.id=$2 AND courses.year=${year}
+                          GROUP BY course_lesson.id, level.name, courses.year, lesson.name, level.id
+                          ORDER BY level.id ASC`;
+            } else {
+                var select = `SELECT course_lesson.id, level.name AS course, courses.year, lesson.name AS lesson FROM course_lesson
+                          LEFT JOIN courses ON courses.id=course_lesson.course
+                          LEFT JOIN level ON level.id=courses.level
+                          LEFT JOIN lesson ON lesson.id=course_lesson.lesson
+                          WHERE course_lesson.id IN (
+                            SELECT course_lesson FROM course_lesson_teacher WHERE teacher=$1) AND course=$2
+                          AND courses.year=${year}`;
+            }
+            /*var select = `SELECT course_lesson.id, level.name AS course, courses.year, lesson.name AS lesson, COUNT(course_lesson_teacher.teacher) AS teachers, COUNT(course_lesson_schedule.course_lesson) AS schedule
+                          FROM course_lesson
+                          LEFT JOIN courses ON courses.id=course_lesson.course
+                          LEFT JOIN level ON level.id=courses.level
+                          LEFT JOIN lesson ON lesson.id=course_lesson.lesson
+                          LEFT JOIN course_lesson_teacher ON course_lesson_teacher.course_lesson=course_lesson.id
+                          LEFT JOIN course_lesson_schedule ON course_lesson_schedule.course_lesson=course_lesson.id
+                          WHERE courses.id=$1
+                          GROUP BY course_lesson.id, level.name, courses.year, lesson.name, level.id
+                          ORDER BY level.id ASC`;*/
+            request.pg.client.query(select, [encodeURIComponent(request.params.teacher), encodeURIComponent(request.params.course)], (err, result) => {
+                let course_lesson = result.rows;
+                return reply(course_lesson);
+            })
+        },
+        validate: {
+            params: {
+                course: Joi.number().min(0),
+                teacher: Joi.number().min(0)
             }
         }
     }

@@ -1,7 +1,7 @@
 let controller = {
     validate: (cb) => {
         let err = false;
-        $('#student, #courses, #type').each((index, el) => {
+        $('#courses, #lesson').each((index, el) => {
             if (parseInt($(el).val()) === 0) {
                 //$(el).parent().addClass('has-error');
                 $(el).selectpicker('setStyle', 'btn-danger');
@@ -42,9 +42,9 @@ let controller = {
     loadSelectLesson: (course) => {
         var userId = credentials.id;
         if (credentials.rolename === 'Administrador') {
-            var apiPath = '/api/lesson/courses/' + course;
+            var apiPath = '/api/course_lesson/' + course + '/course/';
         } else {
-            var apiPath = '/api/lesson/courses/' + course + '/teacher/' + userId;
+            var apiPath = '/api/course_lesson/' + course + '/teacher/' + userId;
         }
         $.get(apiPath, function(data) {
             var count = data.length;
@@ -56,10 +56,10 @@ let controller = {
             $.each(data, function(i, item) {
                 if (parseInt(count) === 1) {
                     $select.append($("<option></option>")
-                        .attr("value", item.id).attr('selected', 'selected').text(item.name));
+                        .attr("value", item.id).attr('selected', 'selected').text(item.lesson));
                 } else {
                     $select.append($("<option></option>")
-                        .attr("value", item.id).text(item.name));
+                        .attr("value", item.id).text(item.lesson));
                 }
             });
             $('#lesson').selectpicker('refresh');
@@ -69,10 +69,10 @@ let controller = {
         });
     },
     loadStudents: (course) => {
-        $.get('/api/student/courses/' + course, function(data) {
+        $.get('/api/student/courses/' + course, function(students) {
             var bodyStudent = '';
-            $.each(data, function(index, val) {
-                bodyStudent += '<tr><td>' + val.name + '</td><td><input type="number" step="0.1" ></td></tr>';
+            $.each(students, function(index, student) {
+                bodyStudent += '<tr><td id="' + student.id + '"> ' + (index + 1) + '.- ' + student.name + '</td><td><input class="gradeToSave" type="number" step="0.1" /></td></tr>';
             });
             $('#student-data').html(bodyStudent);
         });
