@@ -25,9 +25,19 @@ $(document).ready(function() {
         let course = $(this).val();
         controller.loadSelectLesson(course);
     });
+
+    /** AQUI **/
+
     $('#lesson').on('changed.bs.select', function() {
         let course = $('#courses').val();
-        controller.loadStudents(course);
+        let course_lesson = $(this).val();
+        $.get('/api/course_lesson_grade/' + course_lesson, function(data) {
+            if (data.index) {
+                controller.loadStudentGrades(data, course);
+            } else {
+                controller.loadStudents(course);
+            }
+        });
     });
     $('#saveGrade').click(function(event) {
         var nullTextGrades = '',
@@ -61,23 +71,20 @@ $(document).ready(function() {
                     }]
                 }).then(function(data) {
                     if (data.button == 'info') {
-                        // Simulate Delay
-                        setTimeout(function() {
-                            x0p('Datos guardados', null, 'ok', false);
-                        }, 1500);
-                        let lesson = $('#lesson').val();
-                        let course = $('#course').val();
+                        let course_lesson = $('#lesson').val();
                         let date = moment().format('YYYY-MM-DD HH:mm:ss');
-                        let grades = {
-                            course,
-                            lesson,
-                        }
-                        /*$.post('/api/person_comment', { comment, course_lesson, student, type, date, teacher: users_session }, function(data, textStatus, xhr) {
-                            controller.loadSelectCourse();
-                            $('.summernote').summernote('reset');
-                            $('#type, #student').selectpicker('val', 0);
-                            global.sendMessage('success', 'Anotación ingresada con éxito!');
-                        });*/
+                        let teacher = credentials.id;
+                        let grades = [];
+                        $('.gradeToSave').each(function(index, el) {
+                            let student = parseInt($(el).parent().siblings().first().attr('id'));
+                            let grade = parseFloat($(el).val());
+                            grade = grade || 0;
+                            let indexGrade = parseInt($(el).attr('data-index'));
+                            grades.push({ student, grade, index: indexGrade });
+                        });
+                        $.post('/api/course_lesson_grade', { course_lesson, teacher, date, grades: JSON.stringify(grades) }, function(data, textStatus, xhr) {
+                            x0p('Datos guardados', null, 'ok', false);
+                        });
                     }
                 });
             }

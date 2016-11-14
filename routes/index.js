@@ -13,7 +13,6 @@ import { cookie_options } from '../config/config';
 import login from './handlers/loginHandler'
 import loginPublic from './handlers/loginPublicHandler'
 import logout from './handlers/logoutHandler'
-//import logoutPublic from './handlers/logoutPublicHandler'
 
 import API from '../api/routes/';
 
@@ -81,13 +80,6 @@ const Logout = {
         handler: logout
     }
 };
-/*const LogoutPublic = {
-    method: 'GET',
-    path: '/logoutPublic',
-    config: {
-        handler: logoutPublic
-    }
-};*/
 const Password = {
     method: 'GET',
     path: '/change_password',

@@ -7,7 +7,7 @@
 <div class="container">
     {{> header}}
 </div>
-<h4 class="text-center">Ingreso de Notas</h4>
+<!-- <h4 class="text-center">Ingreso de Notas</h4> -->
 <br>
 <div class="panel panel-info">
     <div id="crudForm" class="panel-body">
@@ -28,7 +28,7 @@
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <table class="table table-condensed table-bordered" style="zoom: 90%;" width="100%">
-                    <thead>
+                    <thead id="headerGrades">
                         <tr>
                             <th>Alumno</th>
                             <th width="10%">Nota</th>
@@ -53,6 +53,7 @@
     </script>
     <script type="text/javascript" src="/public/tools/x0popup/dist/x0popup.min.js"></script>
     <script type="text/javascript" src="/public/tools/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/1.2.1/lodash.min.js"></script>
     <script type="text/javascript" src="/public/js/grades/controller.js"></script>
     <script type="text/javascript" src="/public/js/grades/main.js"></script>
 {{/extend}}

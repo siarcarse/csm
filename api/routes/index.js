@@ -9,6 +9,7 @@ import course_lessonAPI from './course_lesson/course_lesson-api'
 import course_studentAPI from './course_student/course_student-api'
 import course_lesson_scheduleAPI from './course_lesson_schedule/course_lesson_schedule-api'
 import course_lesson_teacherAPI from './course_lesson_teacher/course_lesson_teacher-api'
+import course_lesson_gradeAPI from './course_lesson_grade/course_lesson_grade-api'
 import studentAPI from './student/student-api'
 import teacherAPI from './teacher/teacher-api'
 import parentAPI from './parent/parent-api'
@@ -66,6 +67,7 @@ const rulesAPI = [].concat(
     course_lessonAPI,
     course_studentAPI,
     course_lesson_teacherAPI,
+    course_lesson_gradeAPI,
     person_commentAPI,
     course_lesson_scheduleAPI,
     Password
