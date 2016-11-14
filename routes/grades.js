@@ -3,7 +3,7 @@ const gradesRules = [{
     path: '/grades',
     config: {
         handler: (request, reply) => {
-            return reply.view('academic/grades', {});
+            return reply.view('academic/grades', {}, { layout: 'layoutFullWidth' });
         }
     }
 }]

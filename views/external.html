@@ -1,0 +1,92 @@
+{{#extend "css"}}
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/public/tools/materialize/css/materialize.min.css">
+    <style type="text/css">
+    header,
+    main,
+    footer {
+        padding-left: 300px;
+    }
+    
+    @media only screen and (max-width: 992px) {
+        header,
+        main,
+        footer {
+            padding-left: 0;
+        }
+    }
+    
+    .collapsible-body p {
+        padding: 1rem !important;
+    }
+    </style>
+{{/extend}}
+<nav>
+    <ul id="dropdown1" class="dropdown-content">
+        <li><a href="/logout">Cerrar Sesión</a></li>
+        <li><a href="#">Cambiar Contraseña</a></li>
+    </ul>
+    <ul id="slide-out" class="side-nav fixed">
+        <li>
+            <div class="userView">
+                <div class="background">
+                    <img src="/public/images/office.jpg">
+                </div>
+                <a><img class="circle" src="/public/images/user.jpeg"></a>
+                <a><span class="white-text name">{{credentials.name}}</span></a>
+                <a><span class="white-text email">{{credentials.lastname}}</span></a>
+            </div>
+        </li>
+        {{#ifCond credentials.type "alumno"}}
+            <li class="bold"><a href="#!" class="waves-effect waves-teal">Ver mis Notas</a></li>
+            <li class="bold"><a data-child="{{credentials.id}}" class="waves-effect waves-teal comments">Ver mis Anotaciones</a></li>
+            {{else}}
+                {{#each credentials.childs}}
+                    <!-- <li class="bold"><a class="waves-effect waves-teal child" data-child="{{id}}">{{name}} {{lastname}}</a></li> -->
+                    <li class="no-padding">
+                        <ul class="collapsible collapsible-accordion">
+                            <li>
+                                <a class="collapsible-header waves-effect waves-teal">{{name}} {{lastname}}<i class="mdi-navigation-arrow-drop-down"></i></a>
+                                <div class="collapsible-body">
+                                    <ul>
+                                        <li><a class="comments" data-child="{{id}}">Ver Anotaciones</a></li>
+                                        <li><a class="grades" data-child="{{id}}">Ver Notas</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                {{/each}}
+        {{/ifCond}}
+    </ul>
+    <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+    <div class="nav-wrapper">
+        <ul class="right">
+            <li><a class="dropdown-button" data-beloworigin="true" data-hover="true" data-constrainwidth="false" href="#!" data-activates="dropdown1">Sesión</a></li>
+        </ul>
+    </div>
+</nav>
+<main>
+    <div id="main" class="container">
+        <ul class="collapsible" data-collapsible="accordion">
+            <li>
+                <div class="collapsible-header"><i class="material-icons">filter_drama</i>First</div>
+                <div class="collapsible-body">
+                    <p><b>Profesor: </b> Simplicio Cárcamo</p>
+                    <p><b>Curso/Asignatura: </b> Primero Básico - Lenguaje</p>
+                    <p><b>Anotación: </b>Lorem ipsum dolor sit amet.</p>
+                </div>
+            </li>
+        </ul>
+    </div>
+</main>
+{{#extend "js"}}
+    <script type="text/javascript" src="/public/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/public/js/global/moment.js"></script>
+    <script type="text/javascript" src="/public/tools/materialize/js/materialize.min.js"></script>
+    <script type="text/javascript">
+    const credentials = JSON.parse('{{{ parseJson credentials}}}');
+    </script>
+    <script type="text/javascript" src="/public/js/external/controller.js"></script>
+    <script type="text/javascript" src="/public/js/external/main.js"></script>
+{{/extend}}

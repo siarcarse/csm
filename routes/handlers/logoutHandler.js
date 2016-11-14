@@ -1,6 +1,10 @@
 const logout = function(request, reply) {
-
-    request.cookieAuth.clear();
-    return reply.redirect('/');
+    if (typeof request.auth.credentials.type === 'string') {
+        request.cookieAuth.clear();
+        return reply.redirect('/loginPublic');
+    } else {
+        request.cookieAuth.clear();
+        return reply.redirect('/');
+    }
 };
 export default logout;

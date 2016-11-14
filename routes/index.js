@@ -11,7 +11,9 @@ import grades from './grades';
 import user from './user';
 import { cookie_options } from '../config/config';
 import login from './handlers/loginHandler'
+import loginPublic from './handlers/loginPublicHandler'
 import logout from './handlers/logoutHandler'
+//import logoutPublic from './handlers/logoutPublicHandler'
 
 import API from '../api/routes/';
 
@@ -51,6 +53,27 @@ const Login = {
         plugins: { 'hapi-auth-cookie': { redirectTo: false } }
     }
 };
+
+const LoginPublic = {
+    method: ['GET', 'POST'],
+    path: '/loginPublic',
+    config: {
+        handler: loginPublic,
+        auth: { mode: 'try' },
+        plugins: { 'hapi-auth-cookie': { redirectTo: false } }
+    }
+};
+
+const External = {
+    method: 'GET',
+    path: '/external',
+    config: {
+        handler: function(request, reply) {
+            return reply.view('external', {}, { layout: 'clean' });
+        },
+        plugins: { 'hapi-auth-cookie': { redirectTo: '/loginPublic' } }
+    }
+};
 const Logout = {
     method: 'GET',
     path: '/logout',
@@ -58,6 +81,13 @@ const Logout = {
         handler: logout
     }
 };
+/*const LogoutPublic = {
+    method: 'GET',
+    path: '/logoutPublic',
+    config: {
+        handler: logoutPublic
+    }
+};*/
 const Password = {
     method: 'GET',
     path: '/change_password',
@@ -76,7 +106,9 @@ const Password = {
 const rules = [].concat(
     Public,
     Index,
+    External,
     Login,
+    LoginPublic,
     Logout,
     role,
     level,

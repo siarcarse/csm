@@ -4,9 +4,9 @@ var _ = require('lodash'),
 
 ifCond = function(value1, value2, context) {
     if (value1 === value2) {
-        return options.fn(this);
+        return context.fn(this);
     }
-    return options.inverse(this);
+    return context.inverse(this);
 };
 
 module.exports = ifCond;

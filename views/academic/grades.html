@@ -4,13 +4,12 @@
     <link rel="stylesheet" type="text/css" href="/public/tools/summernote/dist/summernote.css">
     <link rel="stylesheet" type="text/css" href="/public/tools/x0popup/dist/x0popup.min.css">
 {{/extend}}
-{{> header}}
-<h3 class="text-center">Ingreso de Notas</h3>
+<div class="container">
+    {{> header}}
+</div>
+<h4 class="text-center">Ingreso de Notas</h4>
 <br>
 <div class="panel panel-info">
-    <div class="panel-heading">
-        <h3 class="panel-title">Complete los datos</h3>
-    </div>
     <div id="crudForm" class="panel-body">
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
@@ -28,11 +27,12 @@
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <table class="table table-condensed" style="zoom: 90%;">
+                <table class="table table-condensed table-bordered" style="zoom: 90%;" width="100%">
                     <thead>
                         <tr>
                             <th>Alumno</th>
-                            <th>Nota</th>
+                            <th width="10%">Nota</th>
+                            <th width="10%">Promedio</th>
                         </tr>
                     </thead>
                     <tbody id="student-data">
