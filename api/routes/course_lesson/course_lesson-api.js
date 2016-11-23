@@ -61,7 +61,8 @@ const course_lesson = [{
                           LEFT JOIN lesson ON lesson.id=course_lesson.lesson
                           WHERE courses.id=$1
                           ORDER BY level.id ASC`;*/
-            var select = `SELECT course_lesson.id, level.name AS course, courses.year, lesson.name AS lesson, COUNT(course_lesson_teacher.teacher) AS teachers, COUNT(course_lesson_schedule.course_lesson) AS schedule
+            var select = `SELECT course_lesson.id, level.name AS course, courses.year, lesson.name AS lesson, COUNT(course_lesson_teacher.teacher) AS teachers,
+                          COUNT(course_lesson_schedule.course_lesson) AS schedule, course_lesson.semester
                           FROM course_lesson
                           LEFT JOIN courses ON courses.id=course_lesson.course
                           LEFT JOIN level ON level.id=courses.level
@@ -89,7 +90,8 @@ const course_lesson = [{
         handler: (request, reply) => {
             var year = Moment().format('YYYY');
             if (parseInt(request.params.course) === 0) {
-                var select = `SELECT course_lesson.id, level.name AS course, courses.year, lesson.name AS lesson, COUNT(course_lesson_teacher.teacher) AS teachers, COUNT(course_lesson_schedule.course_lesson) AS schedule
+                var select = `SELECT course_lesson.id, level.name AS course, courses.year, lesson.name AS lesson, COUNT(course_lesson_teacher.teacher) AS teachers,
+                          COUNT(course_lesson_schedule.course_lesson) AS schedule, , course_lesson.semester
                           FROM course_lesson
                           LEFT JOIN courses ON courses.id=course_lesson.course
                           LEFT JOIN level ON level.id=courses.level
@@ -100,7 +102,7 @@ const course_lesson = [{
                           GROUP BY course_lesson.id, level.name, courses.year, lesson.name, level.id
                           ORDER BY level.id ASC`;
             } else {
-                var select = `SELECT course_lesson.id, level.name AS course, courses.year, lesson.name AS lesson FROM course_lesson
+                var select = `SELECT course_lesson.id, level.name AS course, courses.year, lesson.name AS lesson, course_lesson.semester FROM course_lesson
                           LEFT JOIN courses ON courses.id=course_lesson.course
                           LEFT JOIN level ON level.id=courses.level
                           LEFT JOIN lesson ON lesson.id=course_lesson.lesson
@@ -151,6 +153,29 @@ const course_lesson = [{
             payload: Joi.object().keys({
                 course: Joi.number().required().min(1),
                 lesson: Joi.number().required(),
+            })
+        }
+    }
+}, {
+    method: 'POST',
+    path: '/api/course_lesson/close_semester/',
+    config: {
+        handler: (request, reply) => {
+            let course_lesson = request.payload.course_lesson;
+            let semester = request.payload.semester;
+            let sql = `UPDATE course_lesson SET semester = ${semester} WHERE id = ${course_lesson}`;
+            request.pg.client.query(sql, (err, result) => {
+                if (err) {
+                    reply({ message: err });
+                } else {
+                    reply({ message: result });
+                }
+            })
+        },
+        validate: {
+            payload: Joi.object().keys({
+                semester: Joi.number().required().min(1),
+                course_lesson: Joi.number().required(),
             })
         }
     }
