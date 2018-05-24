@@ -62,7 +62,7 @@ const course_lesson = [{
                           WHERE courses.id=$1
                           ORDER BY level.id ASC`;*/
             var select = `SELECT course_lesson.id, level.name AS course, courses.year, lesson.name AS lesson, COUNT(course_lesson_teacher.teacher) AS teachers,
-                          COUNT(course_lesson_schedule.course_lesson) AS schedule, course_lesson.semester
+                          COUNT(course_lesson_schedule.course_lesson) AS schedule
                           FROM course_lesson
                           LEFT JOIN courses ON courses.id=course_lesson.course
                           LEFT JOIN level ON level.id=courses.level
